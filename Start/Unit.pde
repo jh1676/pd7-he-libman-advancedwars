@@ -9,4 +9,9 @@ abstract class Unit {
     this.health = heath;
     this.c = c;
   }
+  
+  void draw() {
+    
+  }
+  
 } 
