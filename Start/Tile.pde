@@ -7,5 +7,8 @@ abstract class Tile{
      this.img = img;
 
    }
+   void draw(int x, int y){
+     image(img,x,y);
+   }
   
 }
