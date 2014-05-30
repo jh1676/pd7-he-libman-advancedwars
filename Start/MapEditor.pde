@@ -1,7 +1,9 @@
 class MapEditor implements State{
   Game game;
+  Tile tileList;
  public MapEditor() {
    //standard map 416 by 416 w/ 16 x 16 tiles
+   background(255,255,255);
   frame.setResizable(true);
   frame.setSize(480,416);
   frame.setResizable(false);
