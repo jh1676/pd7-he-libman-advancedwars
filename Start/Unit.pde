@@ -12,7 +12,7 @@ abstract class Unit {
   
   void draw() {
     //placeholder
-    image("sprites/sprite1.png",0,0);
+    //image("sprites/sprite1.png",0,0);
   }
   
 } 
