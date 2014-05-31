@@ -7,8 +7,11 @@ class MapEditor implements State{
   background(255,255,255);
   game = new Game();
    Start.grass = loadImage("sprites/grass.png");
-  tileList.add(new GrassTile());
-  tileList.add(new Road1Tile());
+  tileList.add(new GrassTile(0,448));
+  tileList.add(new Road1Tile(0,448));
+  for (int i = 0; i < tileList.size(); i++) {
+   tileList.get(i).setX((400/(tileList.size() + 1) * (i +1)));
+  }
  }
  
  void draw() {
@@ -16,7 +19,7 @@ class MapEditor implements State{
    strokeWeight(4);
   line(0,416,416,416); 
   for (int i = 0; i < tileList.size(); i++) {
-    tileList.get(i).draw(16 + (i * 16), 448);
+    tileList.get(i).draw();
   }
 
 
