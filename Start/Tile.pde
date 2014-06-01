@@ -1,4 +1,4 @@
-abstract class Tile{
+class Tile{
    PImage img;
    int x, y, defense, moveCost;
    public Tile(int x, int y, int defense, int moveCost, PImage img){
@@ -22,8 +22,6 @@ abstract class Tile{
   }
   
   boolean isMouseOver() {
-   if (mouseX >= t.x && mouseX <= t.x + 16 && mouseY >= t.y && mouseY <= t.y+16) {
-    return true; 
-   }
+   return (mouseX >= this.x && mouseX <= this.x + 16 && mouseY >= this.y && mouseY <= this.y+16);
   }
 }

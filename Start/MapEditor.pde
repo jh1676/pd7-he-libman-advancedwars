@@ -1,7 +1,10 @@
 class MapEditor implements State {
   Game game;
   ArrayList<Tile> tileList = new ArrayList<Tile>();
-  Tile selected = new GrassTile(0, 0);
+  //Tile selected = new GrassTile(0, 0);
+  PImage selectedImg = Start.grass;
+  int selectedDef = 1;
+  int selectedMoveCost = 1;
   public MapEditor() {
     //standard map 416 by 416 w/ 16 x 16 tiles
     background(255, 255, 255);
@@ -9,6 +12,11 @@ class MapEditor implements State {
     Start.grass = loadImage("sprites/grass.png");
     tileList.add(new GrassTile(0, 448));
     tileList.add(new Road1Tile(0, 448));
+    tileList.add(new Road2Tile(0, 448));
+    tileList.add(new Road3Tile(0, 448));
+    tileList.add(new Road4Tile(0, 448));
+    tileList.add(new Road5Tile(0, 448));
+    tileList.add(new Road6Tile(0, 448));
     for (int i = 0; i < tileList.size (); i++) {
       tileList.get(i).setX((400/(tileList.size() + 1) * (i +1)));
     }
@@ -42,9 +50,18 @@ class MapEditor implements State {
   void mouseClicked () {
     for (Tile t : tileList) {
       if (t.isMouseOver()) {
-       selected = t; 
+       selectedImg = t.img;
+       selectedDef = t.defense;
+       selectedMoveCost = t.moveCost;
       }
-    }  
+    }
+    for (int i = 0; i < game.tiles.length; i++){  
+      for (int j = 0; j < game.tiles[0].length; j++){  
+        if (game.tiles[i][j].isMouseOver()){
+           game.tiles[i][j] = new Tile(j * 16, i * 16, selectedDef, selectedMoveCost, selectedImg);
+        }   
+      }
+    }
   }
   
   void keyPressed() {

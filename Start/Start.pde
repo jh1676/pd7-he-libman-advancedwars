@@ -30,6 +30,6 @@ void keyPressed() {
 }
 
 void mouseClicked() {
-  
+  s.mouseClicked();
 }
 

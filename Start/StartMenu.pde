@@ -20,6 +20,8 @@ class StartMenu implements State {
     }
   }
   
-  void mouseClicked();
+  void mouseClicked(){
+
+  }
 }
 
