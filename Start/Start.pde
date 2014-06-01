@@ -20,10 +20,16 @@ void loadImages() {
  water = loadImage("sprites/water.png");
 }
 void draw() {
+  clear();
+  background(255,255,255);
   s.draw();
 }
 
 void keyPressed() {
   s.keyPressed();
+}
+
+void mouseClicked() {
+  
 }
 

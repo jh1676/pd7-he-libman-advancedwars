@@ -20,4 +20,10 @@ abstract class Tile{
   void setY(int y) {
    this.y = y; 
   }
+  
+  boolean isMouseOver() {
+   if (mouseX >= t.x && mouseX <= t.x + 16 && mouseY >= t.y && mouseY <= t.y+16) {
+    return true; 
+   }
+  }
 }
