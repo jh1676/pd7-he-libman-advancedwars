@@ -1,10 +1,10 @@
 class MapEditor implements State {
   Game game;
   ArrayList<Tile> tileList = new ArrayList<Tile>();
-  //Tile selected = new GrassTile(0, 0);
-  PImage selectedImg = Start.grass;
+  Tile selected = new GrassTile(0, 0);
+  /*PImage selectedImg = Start.grass;
   int selectedDef = 1;
-  int selectedMoveCost = 1;
+  int selectedMoveCost = 1; */
   public MapEditor() {
     //standard map 416 by 416 w/ 16 x 16 tiles
     background(255, 255, 255);
@@ -50,18 +50,43 @@ class MapEditor implements State {
   void mouseClicked () {
     for (Tile t : tileList) {
       if (t.isMouseOver()) {
-       selectedImg = t.img;
+       /*selectedImg = t.img;
        selectedDef = t.defense;
-       selectedMoveCost = t.moveCost;
+       selectedMoveCost = t.moveCost;*/
+       selected = t;
+       return;
       }
     }
+    
+    if(mouseY <= 416) {
+      int x = mouseX/16*16;
+      int y = mouseY/16*16;
+      Tile nt = new GrassTile(x,y);
+      if(selected instanceof  GrassTile) {
+        nt = new GrassTile(x,y);
+      } else if(selected instanceof Road1Tile) {
+       nt = new Road1Tile(x,y); 
+      } else if(selected instanceof Road2Tile) {
+       nt = new Road2Tile(x,y); 
+      } else if(selected instanceof Road3Tile) {
+       nt = new Road3Tile(x,y); 
+      } else if(selected instanceof Road4Tile) {
+       nt = new Road4Tile(x,y); 
+      } else if(selected instanceof Road5Tile) {
+       nt = new Road5Tile(x,y); 
+      } else if(selected instanceof Road6Tile) {
+       nt = new Road6Tile(x,y); 
+      }
+      game.tiles[y/16][x/16] = nt;
+    }
+    /*
     for (int i = 0; i < game.tiles.length; i++){  
       for (int j = 0; j < game.tiles[0].length; j++){  
         if (game.tiles[i][j].isMouseOver()){
            game.tiles[i][j] = new Tile(j * 16, i * 16, selectedDef, selectedMoveCost, selectedImg);
         }   
       }
-    }
+    } */
   }
   
   void keyPressed() {
