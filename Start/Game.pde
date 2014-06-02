@@ -1,11 +1,42 @@
 class Game implements State {
   Tile[][] tiles;
-
+  int numRows = 26, numCols = 26;
   public Game() {
+    String[] map =   loadStrings("map.txt");
     tiles = new Tile[26][26];
+    if (map != null) {
+      for (int i = 0; i < map.length; i++) {
+        String[] p = map[i].split(",");
+        for (int n = 0; n < p.length; n++) {
+          if (p[n].equals("grass")) {
+            tiles[i][n] = new GrassTile(n * 16, i * 16);
+          } else if (p[n].equals("road1")) {
+            tiles[i][n] = new Road1Tile(n * 16, i * 16);
+          } else if (p[n].equals("road2")) {
+            tiles[i][n] = new Road2Tile(n * 16, i * 16);
+          } else if (p[n].equals("road3")) {
+            tiles[i][n] = new Road3Tile(n * 16, i * 16);
+          } else if (p[n].equals("road4")) {
+            tiles[i][n] = new Road4Tile(n * 16, i * 16);
+          } else if (p[n].equals("road5")) {
+            tiles[i][n] = new Road5Tile(n * 16, i * 16);
+          } else if (p[n].equals("road6")) {
+            tiles[i][n] = new Road6Tile(n * 16, i * 16);
+          } else if (p[n].equals("water")) {
+            tiles[i][n] = new WaterTile(n*16, i*16);
+          } else {
+           System.out.println(p[n]); 
+            
+          }
+        }
+      }
+    }
+
     for (int i = 0; i < tiles.length; i++) {
       for (int n =0; n < tiles[0].length; n++) {
-        tiles[i][n] = new GrassTile(n * 16, i * 16);
+        if (tiles[i][n] == null) {
+          tiles[i][n] = new GrassTile(n * 16, i * 16);
+        }
       }
     }
   }
@@ -25,8 +56,8 @@ class Game implements State {
 
 
   void mouseOver() {
-    if(mouseY > 416) {
-     return; 
+    if (mouseY > 416) {
+      return;
     }
     int x = (mouseX/16)*16;
     int y = (mouseY/16*16);
@@ -37,9 +68,8 @@ class Game implements State {
     triangle(x+16, y, x+14, y, x+16, y+2);
     triangle(x, y+16, x, y+14, x+2, y+16);
   }
-  
+
   void mouseClicked() {
-    
   }
 }
 

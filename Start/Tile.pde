@@ -1,27 +1,29 @@
-class Tile{
-   PImage img;
-   int x, y, defense, moveCost;
-   public Tile(int x, int y, int defense, int moveCost, PImage img){
-     this.x = x;
-     this.y = y;
-     this.defense = defense;
-     this.moveCost = moveCost;
-     this.img = img;
+abstract class Tile {
+  PImage img;
+  int x, y, defense, moveCost;
+  String name;
+  public Tile(int x, int y, int defense, int moveCost, PImage img, String name) {
+    this.x = x;
+    this.y = y;
+    this.defense = defense;
+    this.moveCost = moveCost;
+    this.img = img;
+    this.name = name;
+  }
+  void draw() {
+    image(img, x, y);
+  }
 
-   }
-   void draw(){
-     image(img,x,y);
-   }
-  
   void setX(int x) {
-   this.x = x;
+    this.x = x;
   }
-  
+
   void setY(int y) {
-   this.y = y; 
+    this.y = y;
   }
-  
+
   boolean isMouseOver() {
-   return (mouseX >= this.x && mouseX <= this.x + 16 && mouseY >= this.y && mouseY <= this.y+16);
+    return (mouseX >= this.x && mouseX <= this.x + 16 && mouseY >= this.y && mouseY <= this.y+16);
   }
 }
+
