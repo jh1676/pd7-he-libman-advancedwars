@@ -8,6 +8,7 @@ class Game implements State {
         tiles[i][n] = new GrassTile(n * 16, i * 16);
       }
     }
+    tiles[0][0].unit = new RedSoldier(0,0,20);
   }
   void draw() {
 
@@ -39,7 +40,24 @@ class Game implements State {
   }
   
   void mouseClicked() {
-    
+    Unit selected = null;
+    int selX = 0;
+    int selY = 0;
+    if(mouseY > 416) {
+     return; 
+    }
+    int x = (mouseX/16);
+    int y = (mouseY/16);
+    if (tiles[y][x].unit != null && selected == null){
+      selected = tiles[y][x].unit;
+      selX = x;
+      selY = y;
+    }
+    else if (tiles[y][x].unit == null && selected != null){
+      tiles[y][x].unit = selected;
+      selected = null;
+      tiles[selY][selX].unit = null;
+    }    
   }
 }
 

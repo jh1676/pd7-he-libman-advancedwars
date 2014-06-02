@@ -1,6 +1,7 @@
 class Tile{
    PImage img;
    int x, y, defense, moveCost;
+   Unit unit;
    public Tile(int x, int y, int defense, int moveCost, PImage img){
      this.x = x;
      this.y = y;
@@ -11,6 +12,9 @@ class Tile{
    }
    void draw(){
      image(img,x,y);
+     if (unit != null){
+       unit.draw();
+     }
    }
   
   void setX(int x) {
@@ -20,7 +24,6 @@ class Tile{
   void setY(int y) {
    this.y = y; 
   }
-  
   boolean isMouseOver() {
    return (mouseX >= this.x && mouseX <= this.x + 16 && mouseY >= this.y && mouseY <= this.y+16);
   }
