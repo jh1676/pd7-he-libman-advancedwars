@@ -14,6 +14,7 @@ abstract class Unit {
   }
   void draw(int x, int y) {
     image(loadImage("sprites/sprite" + animations[0] + ".png"),x,y);
+
   }
   
   Tile[] getMoveLocs() {
