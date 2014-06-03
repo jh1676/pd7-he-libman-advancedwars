@@ -2,6 +2,8 @@ abstract class Tile {
   PImage img;
   int x, y, defense, moveCost;
   String name;
+  Unit unit;
+
   public Tile(int x, int y, int defense, int moveCost, PImage img, String name) {
     this.x = x;
     this.y = y;
@@ -12,6 +14,9 @@ abstract class Tile {
   }
   void draw() {
     image(img, x, y);
+    if (unit != null){
+       unit.draw();
+     }
   }
 
   void setX(int x) {
