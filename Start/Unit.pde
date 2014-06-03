@@ -2,6 +2,7 @@ abstract class Unit {
   int health;
   color c;
   int[] animations;
+  Tile parent;
   
   public Unit(int health, color c) {
     this.health = health;
@@ -12,6 +13,10 @@ abstract class Unit {
     this.animations = animations;
   }
   void draw(int x, int y) {
-    image(loadImage("sprites/sprite" + animations[0] + ".png"),x * 16,y * 16);
+    image(loadImage("sprites/sprite" + animations[0] + ".png"),x,y);
+  }
+  
+  Tile[] getMoveLocs() {
+    
   }
 } 

@@ -87,6 +87,7 @@ class Game implements State {
     else if (tiles[y][x].unit == null && selected != null){
       tiles[y][x].unit = selected;
       selected = null;
+      
       tiles[selY][selX].unit = null;
     }    
 
