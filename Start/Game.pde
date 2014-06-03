@@ -2,6 +2,7 @@ class Game implements State {
   Tile[][] tiles;
   Unit selected = null;
   int numRows = 26, numCols = 26;
+  int selX, selY;
   public Game() {
     String[] map =   loadStrings("map.txt");
     tiles = new Tile[26][26];
@@ -72,8 +73,6 @@ class Game implements State {
   }
 
   void mouseClicked() {
-    int selX = 0;
-    int selY = 0;
     if(mouseY > 416) {
      return; 
     }
@@ -89,7 +88,6 @@ class Game implements State {
       selected = null;
       tiles[selY][selX].unit = null;
     }    
-
   }
 }
 

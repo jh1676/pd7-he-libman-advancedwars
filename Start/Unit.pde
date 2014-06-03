@@ -12,6 +12,6 @@ abstract class Unit {
     this.animations = animations;
   }
   void draw(int x, int y) {
-    image(loadImage("sprites/sprite" + animations[0] + ".png"),x * 16,y * 16);
+    image(loadImage("sprites/sprite" + animations[0] + ".png"),x,y);
   }
 } 
