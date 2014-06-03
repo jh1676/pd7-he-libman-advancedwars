@@ -15,7 +15,7 @@ abstract class Tile {
   void draw() {
     image(img, x, y);
     if (unit != null){
-       unit.draw();
+       unit.draw(x,y);
      }
   }
 

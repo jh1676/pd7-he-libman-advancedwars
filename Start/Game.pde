@@ -40,7 +40,7 @@ class Game implements State {
         }
       }
     }
-    tiles[0][0].unit = new RedSoldier(0,0,20);
+    tiles[0][0].unit = new RedSoldier(20);
   }
   void draw() {
 
@@ -85,7 +85,6 @@ class Game implements State {
       selY = y;
     }
     else if (tiles[y][x].unit == null && selected != null){
-      print("selected empty tile");
       tiles[y][x].unit = selected;
       selected = null;
       tiles[selY][selX].unit = null;
