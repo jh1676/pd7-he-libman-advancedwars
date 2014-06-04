@@ -4,7 +4,7 @@ class Game implements State {
   int numRows = 26, numCols = 26;
   int selX, selY;
   public Game() {
-    String[] map =   loadStrings("map.txt");
+    String[] map = loadStrings("map.txt");
     tiles = new Tile[26][26];
     if (map != null) {
       for (int i = 0; i < map.length; i++) {
@@ -27,8 +27,7 @@ class Game implements State {
           } else if (p[n].equals("water")) {
             tiles[i][n] = new WaterTile(n*16, i*16);
           } else {
-           System.out.println(p[n]); 
-            
+            System.out.println(p[n]);
           }
         }
       }
@@ -41,7 +40,7 @@ class Game implements State {
         }
       }
     }
-    tiles[0][0].unit = new RedSoldier(20);
+    tiles[5][5].unit = new RedSoldier(20);
   }
   void draw() {
 
@@ -50,10 +49,19 @@ class Game implements State {
         tiles[a][b].draw();
       }
     }
+    
+    for (int a = 0; a < tiles.length; a++) {
+      for (int b = 0; b < tiles[0].length; b++) {
+        tiles[a][b].drawUnit();
+      }
+    }
     mouseOver();
   } 
 
   void keyPressed() {
+    if (key == 'd') {
+      tiles[5][5].unit.goDown();
+    }
   }
 
 
@@ -73,22 +81,22 @@ class Game implements State {
   }
 
   void mouseClicked() {
-    if(mouseY > 416) {
-     return; 
+    if (mouseY > 416) {
+      return;
     }
     int x = (mouseX/16);
     int y = (mouseY/16);
-    if (tiles[y][x].unit != null && selected == null){
+    changeUnitTile(x,y);
+  }
+  void changeUnitTile(int x, int y){
+    if (tiles[y][x].unit != null && selected == null) {
       selected = tiles[y][x].unit;
       selX = x;
       selY = y;
-    }
-    else if (tiles[y][x].unit == null && selected != null){
+    }else if (tiles[y][x].unit == null && selected != null) {
       tiles[y][x].unit = selected;
       selected = null;
-      
       tiles[selY][selX].unit = null;
-    }    
+    }
   }
 }
-
