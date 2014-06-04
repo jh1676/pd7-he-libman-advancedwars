@@ -1,5 +1,5 @@
 abstract class Unit {
-  int health;
+  int health, currentFrame, i;
   color c;
   int[] animations;
   Tile parent;
@@ -12,12 +12,21 @@ abstract class Unit {
   void setAnimations(int[] animations){
     this.animations = animations;
   }
+  void nextFrame(){
+    if (i == 8){
+      i = 0;
+      currentFrame = (currentFrame + 1) % animations.length;
+    }
+    else{
+      i++;
+    }
+  }
   void draw(int x, int y) {
-    image(loadImage("sprites/sprite" + animations[0] + ".png"),x,y);
-
+    image(loadImage("sprites/sprite" + animations[currentFrame] + ".png"),x,y);
+    nextFrame();
   }
   
-  Tile[] getMoveLocs() {
+  /*Tile[] getMoveLocs() {
     
-  }
+  }*/
 } 
