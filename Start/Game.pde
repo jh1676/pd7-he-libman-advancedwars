@@ -1,11 +1,13 @@
 class Game implements State {
   Tile[][] tiles;
+  ArrayList<Unit> units;
   Unit selected = null;
   int numRows = 26, numCols = 26;
   int selX, selY;
   public Game() {
     String[] map = loadStrings("map.txt");
     tiles = new Tile[26][26];
+    units = new ArrayList<Unit>();
     if (map != null) {
       for (int i = 0; i < map.length; i++) {
         String[] p = map[i].split(",");
@@ -31,16 +33,17 @@ class Game implements State {
           }
         }
       }
+      units.add(new RedSoldier(2,2));
     }
 
-    for (int i = 0; i < tiles.length; i++) {
+    /*for (int i = 0; i < tiles.length; i++) {
       for (int n =0; n < tiles[0].length; n++) {
         if (tiles[i][n] == null) {
           tiles[i][n] = new GrassTile(n * 16, i * 16);
         }
       }
     }
-    tiles[5][5].unit = new RedSoldier(20);
+    tiles[5][5].unit = new RedSoldier(20);*/
   }
   void draw() {
 
@@ -50,17 +53,29 @@ class Game implements State {
       }
     }
     
-    for (int a = 0; a < tiles.length; a++) {
+    /*for (int a = 0; a < tiles.length; a++) {
       for (int b = 0; b < tiles[0].length; b++) {
         tiles[a][b].drawUnit();
       }
+    }*/
+    for (Unit a: units){
+      a.draw();
     }
     mouseOver();
   } 
 
-  void keyPressed() {
+  void keyPressed(){
+    if (key == 's') {
+      units.get(0).goDown();
+    }
+    if (key == 'w') {
+      units.get(0).goUp();
+    }
+    if (key == 'a') {
+      units.get(0).goLeft();
+    }
     if (key == 'd') {
-      tiles[5][5].unit.goDown();
+      units.get(0).goRight();
     }
   }
 
@@ -88,6 +103,17 @@ class Game implements State {
     int y = (mouseY/16);
     changeUnitTile(x,y);
   }
+  /*void changeUnitTile(int x, int y){
+    if (tiles[y][x].unit != null && selected == null) {
+      selected = tiles[y][x].unit;
+      selX = x;
+      selY = y;
+    }else if (tiles[y][x].unit == null && selected != null) {
+      tiles[y][x].unit = selected;
+      selected = null;
+      tiles[selY][selX].unit = null;
+    }
+  }*/
   void changeUnitTile(int x, int y){
     if (tiles[y][x].unit != null && selected == null) {
       selected = tiles[y][x].unit;

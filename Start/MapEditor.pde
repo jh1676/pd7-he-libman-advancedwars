@@ -1,7 +1,10 @@
 class MapEditor implements State {
   Game game;
   ArrayList<Tile> tileList = new ArrayList<Tile>();
+  ArrayList<Unit> unitList = new ArrayList<Unit>();
   Tile selected = new GrassTile(0, 0);
+  Unit selectedUnit;
+  String type = "tile";
   /*PImage selectedImg = Start.grass;
    int selectedDef = 1;
    int selectedMoveCost = 1; */
@@ -10,17 +13,22 @@ class MapEditor implements State {
     background(255, 255, 255);
     game = new Game();
     Start.grass = loadImage("sprites/grass.png");
-    tileList.add(new GrassTile(0, 448));
-    tileList.add(new Road1Tile(0, 448));
-    tileList.add(new Road2Tile(0, 448));
-    tileList.add(new Road3Tile(0, 448));
-    tileList.add(new Road4Tile(0, 448));
-    tileList.add(new Road5Tile(0, 448));
-    tileList.add(new Road6Tile(0, 448));
-    tileList.add(new WaterTile(0, 448));
+    tileList.add(new GrassTile(0, 442));
+    tileList.add(new Road1Tile(0, 442));
+    tileList.add(new Road2Tile(0, 442));
+    tileList.add(new Road3Tile(0, 442));
+    tileList.add(new Road4Tile(0, 442));
+    tileList.add(new Road5Tile(0, 442));
+    tileList.add(new Road6Tile(0, 442));
+    tileList.add(new WaterTile(0, 442));
 
+    unitList.add(new RedSoldier(0, 462));
+    
     for (int i = 0; i < tileList.size (); i++) {
       tileList.get(i).setX((400/(tileList.size() + 1) * (i +1)));
+    }
+    for (int i = 0; i < unitList.size (); i++) {
+      unitList.get(i).x = ((400/(unitList.size() + 1) * (i +1)));
     }
   }
 
@@ -30,6 +38,9 @@ class MapEditor implements State {
     line(0, 416, 416, 416); 
     for (int i = 0; i < tileList.size (); i++) {
       tileList.get(i).draw();
+    }
+    for (int i = 0; i < unitList.size (); i++) {
+      unitList.get(i).drawList();
     }
     mouseOver();
     strokeWeight(2);
@@ -63,6 +74,18 @@ class MapEditor implements State {
         triangle(x, y+16, x, y+14, x+2, y+16);
       }
     }
+    for (Unit u : unitList) {
+      if (u.isMouseOver()) {
+        int x = u.x;
+        int y = u.y;
+        fill(0, 0, 0);
+        strokeWeight(2);
+        triangle(x, y, x+2, y, x, y+2);
+        triangle(x+16, y+16, x+14, y+16, x+16, y+14);
+        triangle(x+16, y, x+14, y, x+16, y+2);
+        triangle(x, y+16, x, y+14, x+2, y+16);
+      }
+    }
   }
 
   void mouseClicked () {
@@ -72,6 +95,17 @@ class MapEditor implements State {
          selectedDef = t.defense;
          selectedMoveCost = t.moveCost;*/
         selected = t;
+        type = "tile";
+        return;
+      }
+    }
+    for (Unit u : unitList) {
+      if (u.isMouseOver()) {
+        /*selectedImg = t.img;
+         selectedDef = t.defense;
+         selectedMoveCost = t.moveCost;*/
+        selectedUnit = u;
+        type = "unit";
         return;
       }
     }
@@ -79,25 +113,31 @@ class MapEditor implements State {
     if (mouseY <= 416) {
       int x = mouseX/16*16;
       int y = mouseY/16*16;
-      Tile nt = new GrassTile(x, y);
-      if (selected instanceof  GrassTile) {
-        nt = new GrassTile(x, y);
-      } else if (selected instanceof Road1Tile) {
-        nt = new Road1Tile(x, y);
-      } else if (selected instanceof Road2Tile) {
-        nt = new Road2Tile(x, y);
-      } else if (selected instanceof Road3Tile) {
-        nt = new Road3Tile(x, y);
-      } else if (selected instanceof Road4Tile) {
-        nt = new Road4Tile(x, y);
-      } else if (selected instanceof Road5Tile) {
-        nt = new Road5Tile(x, y);
-      } else if (selected instanceof Road6Tile) {
-        nt = new Road6Tile(x, y);
-      } else if (selected instanceof WaterTile) {
-        nt = new WaterTile(x, y);
+      if (type.equals("tile")){
+        Tile nt = new GrassTile(x, y);
+        if (selected instanceof GrassTile) {
+          nt = new GrassTile(x, y);
+        } else if (selected instanceof Road1Tile) {
+          nt = new Road1Tile(x, y);
+        } else if (selected instanceof Road2Tile) {
+          nt = new Road2Tile(x, y);
+        } else if (selected instanceof Road3Tile) {
+          nt = new Road3Tile(x, y);
+        } else if (selected instanceof Road4Tile) {
+          nt = new Road4Tile(x, y);
+        } else if (selected instanceof Road5Tile) {
+          nt = new Road5Tile(x, y);
+        } else if (selected instanceof Road6Tile) {
+          nt = new Road6Tile(x, y);
+        } else if (selected instanceof WaterTile) {
+          nt = new WaterTile(x, y);
+        }
+        game.tiles[y/16][x/16] = nt;
+      }else{
+        if (selectedUnit instanceof RedSoldier) {
+          game.units.add(new RedSoldier(x / 16,y / 16));
+        }
       }
-      game.tiles[y/16][x/16] = nt;
     }
     /*
     for (int i = 0; i < game.tiles.length; i++){  

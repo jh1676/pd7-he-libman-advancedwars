@@ -16,11 +16,11 @@ abstract class Tile {
     image(img, x, y);
   }
 
-  void drawUnit() {
+  /*void drawUnit() {
     if (unit != null) {
       unit.draw(x, y);
     }
-  }
+  }*/
   void setX(int x) {
     this.x = x;
   }
