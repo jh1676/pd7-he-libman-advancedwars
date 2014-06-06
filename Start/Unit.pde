@@ -3,27 +3,18 @@ abstract class Unit {
   color c;
   int[] animations;
   int maxMovePoints, movePoints;
-  Tile parent;
-
-
-  public Unit(Tile holder, int health, color c, int movePoints) {
-    this.health = health;
-    this.c = c;
-    this.maxMovePoints = movePoints;
-    this.movePoints = movePoints;
-    this.parent = holder;
-
   String move = "no";
+
+
   
-  /*
-  public Unit(int x, int y, int health, color c) {
+  public Unit(int x, int y, int health, color c, int movePoints) {
     this.health = health;
     this.c = c;
     this.x = x;
     this.y = y;
->>>>>>> ca54b99d1f9c31148f174cdcbfdeea6c31334d98
-*/
-    //this.animations = animations;
+    this.maxMovePoints = movePoints;
+    this.movePoints = movePoints;
+
   }
   void setAnimations(int[] animations) {
     this.animations = animations;
@@ -39,8 +30,7 @@ abstract class Unit {
 
   void draw(int x, int y) {
     image(loadImage("sprites/sprite" + animations[currentFrame] + ".png"), x, y);
-
-      
+  }
   /*void draw(int x, int y) {
     image(loadImage("sprites/sprite" + animations[currentFrame] + ".png"),x,y);
 >>>>>>> ca54b99d1f9c31148f174cdcbfdeea6c31334d98
@@ -81,7 +71,7 @@ abstract class Unit {
 
   ArrayList<Tile> getMoveLocs() {
     ArrayList<Tile> p = new ArrayList<Tile>();
-    getMoveLocs(maxMovePoints, p, parent.x/16, parent.y/16);
+    getMoveLocs(maxMovePoints, p, x, y);
     return p;
   }
 
@@ -97,7 +87,7 @@ abstract class Unit {
       getMoveLocs(pointsLeft, current, x-1, y+1);
     }
   }
-} 
+
 
 
   void drawList(){//mapEditor unitList draw function

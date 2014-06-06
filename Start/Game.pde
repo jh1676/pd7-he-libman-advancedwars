@@ -33,7 +33,7 @@ class Game implements State {
           }
         }
       }
-      units.add(new RedSoldier(2,2));
+      units.add(new RedSoldier(2,2, color(128,128,128)));
     }
 
     for (int i = 0; i < tiles.length; i++) {
@@ -44,7 +44,6 @@ class Game implements State {
       }
     }
 
-    tiles[0][0].unit = new RedSoldier(tiles[0][0], 20);
 
   }
   void draw() {

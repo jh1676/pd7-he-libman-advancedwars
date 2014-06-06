@@ -22,7 +22,7 @@ class MapEditor implements State {
     tileList.add(new Road6Tile(0, 442));
     tileList.add(new WaterTile(0, 442));
 
-    unitList.add(new RedSoldier(0, 462));
+    unitList.add(new RedSoldier(0, 462, color(0,0,0)));
     
     for (int i = 0; i < tileList.size (); i++) {
       tileList.get(i).setX((400/(tileList.size() + 1) * (i +1)));
@@ -135,7 +135,7 @@ class MapEditor implements State {
         game.tiles[y/16][x/16] = nt;
       }else{
         if (selectedUnit instanceof RedSoldier) {
-          game.units.add(new RedSoldier(x / 16,y / 16));
+          game.units.add(new RedSoldier(x / 16,y / 16, color(255,255,255)));
         }
       }
     }
