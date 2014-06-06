@@ -30,5 +30,9 @@ abstract class Tile {
   boolean isMouseOver() {
     return (mouseX >= this.x && mouseX <= this.x + 16 && mouseY >= this.y && mouseY <= this.y+16);
   }
+  
+  void highlight() {
+    
+  }
 }
 

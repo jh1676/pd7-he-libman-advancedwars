@@ -41,7 +41,7 @@ class Game implements State {
         }
       }
     }
-    tiles[0][0].unit = new RedSoldier(20);
+    tiles[0][0].unit = new RedSoldier(tiles[0][0], 20);
   }
   void draw() {
 
@@ -82,6 +82,7 @@ class Game implements State {
       selected = tiles[y][x].unit;
       selX = x;
       selY = y;
+      System.out.println(tiles[y][x].unit.getMoveLocs());
     }
     else if (tiles[y][x].unit == null && selected != null){
       tiles[y][x].unit = selected;

@@ -1,7 +1,7 @@
 static PFont arial;
 static State s;
 static PImage grass, road1, road2, road3, road4, road5, road6, water;
-
+static HashMap<String, PImage> tileImages = new HashMap<String, PImage>();
 void setup() {
   loadImages(); 
   s = new StartMenu();
