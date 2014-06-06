@@ -46,14 +46,25 @@ class Game implements State {
 
 
   }
-  void draw() {
-
+  void drawTiles(){
     for (int a = 0; a < tiles.length; a++) {
       for (int b = 0; b < tiles[0].length; b++) {
         tiles[a][b].draw();
       }
     }
-    
+  }
+  void drawTintTiles(){
+    if (selected != null){
+      for (Tile t: selected.getMoveLocs()){
+        tint(0,0,100);
+        t.draw();
+        tint(255,255,255);
+      }
+    }
+  }
+  void draw() {
+    drawTiles();
+    drawTintTiles();
     /*for (int a = 0; a < tiles.length; a++) {
       for (int b = 0; b < tiles[0].length; b++) {
         tiles[a][b].drawUnit();
@@ -120,14 +131,10 @@ class Game implements State {
     }
   }*/
   void changeUnitTile(int x, int y){
-    if (tiles[y][x].unit != null && selected == null) {
-      selected = tiles[y][x].unit;
-      selX = x;
-      selY = y;
-    }else if (tiles[y][x].unit == null && selected != null) {
-      tiles[y][x].unit = selected;
-      selected = null;
-      tiles[selY][selX].unit = null;
+    for (Unit u: units){
+      if (u.x == x && u.y == y && selected == null) {
+        selected = u;
+      }
     }
   }
 }

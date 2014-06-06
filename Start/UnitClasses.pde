@@ -10,6 +10,5 @@ class RedSoldier extends Unit{
     super(x,y,20,c, 3);
     int[] sprites = {1,2,3,2};
     setAnimations(sprites);
-    
   }
 }
