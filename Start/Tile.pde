@@ -15,7 +15,12 @@ abstract class Tile {
   void draw() {
     image(img, x, y);
   }
-
+  int getX(){
+    return x / 16;
+  }
+  int getY(){
+    return y / 16;
+  }
   /*void drawUnit() {
     if (unit != null) {
       unit.draw(x, y);
