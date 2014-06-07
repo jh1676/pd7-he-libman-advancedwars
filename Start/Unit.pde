@@ -1,11 +1,12 @@
 import java.util.*;
 abstract class Unit {
-  int health, currentFrame, i, d, x, y;//x and y coors are equal to tile index, unless unit is in the mapeditor bar
+  int health, currentFrame, i, d, x, y, z;//x and y coors are equal to tile index, unless unit is in the mapeditor bar
   color c;
   int[] animations;
   int maxMovePoints, movePoints;
   String move = "no";
-
+  Path movementPath;
+  
 
   public Unit(int x, int y, int health, color c, int movePoints) {
     this.health = health;
@@ -108,45 +109,56 @@ abstract class Unit {
     return (mouseX >= this.x && mouseX <= this.x + 16 && mouseY >= this.y && mouseY <= this.y + 16);
   }
   
-  void moveTo(int x, int y) {
-    PriorityQueue<Path> q = new PriorityQueue<Path>(10, new PathComparator());
-    ArrayList<Tile> visited = new ArrayList<Tile>();
+  void moveTo(int x, int y) { //priority queue
+    PriorityQueue<Path> q = new PriorityQueue<Path>(10, new PathComparator()); //see pathcomparator class
+    //ArrayList<Tile> visited = new ArrayList<Tile>();
     Tile[][] tiles = ((Game)Start.s).tiles;
     q.add(new Path(tiles[this.y][this.x],x,y));
     Path current = q.peek();
-    while(! q.peek().found()){
+    while(q.size() > 0 && ! q.peek().found()){
       current = q.poll();
       //print("x: " + current.x + " y: " + current.y);
-      //try{
+      try{
         Path up = current.add(tiles[current.getLast().getY() - 1][current.getLast().getX()]);
         //print(" up ");
-        q.add(up);
-      //}catch(IndexOutOfBoundsException e){}
-      //try{
+        if (up.getMoveCost() <= maxMovePoints) q.add(up);
+      }catch(IndexOutOfBoundsException e){}
+      try{
         Path down = current.add(tiles[current.getLast().getY() + 1][current.getLast().getX()]);
         //print(" down ");
-        q.add(down);
-      //}catch(IndexOutOfBoundsException e){}
-      //try{
+        if (down.getMoveCost() <= maxMovePoints) q.add(down);
+      }catch(IndexOutOfBoundsException e){}
+      try{
         Path left = current.add(tiles[current.getLast().getY()][current.getLast().getX() - 1]);
-        q.add(left);
-      //}catch(IndexOutOfBoundsException e){}
-      //try{
+        if (left.getMoveCost() <= maxMovePoints) q.add(left);
+      }catch(IndexOutOfBoundsException e){}
+      try{
         Path right = current.add(tiles[current.getLast().getY()][current.getLast().getX() + 1]);
-        q.add(right);
-      //}catch(IndexOutOfBoundsException e){}
-      print(q.poll().getLast().getX() + " ");
-      print(q.poll().getLast().getX() + " ");
-      print(q.poll().getLast().getX() + " ");
-      print(q.poll().getLast().getX() + " ");
+        if (right.getMoveCost() <= maxMovePoints) q.add(right);
+      }catch(IndexOutOfBoundsException e){}
       //return;
-    } 
-    for (Tile r: current.p){
-      print("  CS: " + q.size());
-      print("a");
     }
-    //print(q.peek().moveCost);
+    current.p.add(tiles[y][x]);
+    current.p.add(tiles[y][x]);
+    movementPath = current;
   }
+  void moveOnPath(){
+    if (movementPath != null){
+      if (z < movementPath.p.size() - 1 && move == "no"){
+        if (movementPath.p.get(z + 1).getX() - movementPath.p.get(z).getX() == 1) goRight();
+        else if (movementPath.p.get(z + 1).getX() - movementPath.p.get(z).getX() == -1) goLeft();
+        else if (movementPath.p.get(z + 1).getY() - movementPath.p.get(z).getY() == 1) goDown();
+        else goUp();
+        z++;
+      }
+      else if (z >= movementPath.p.size() - 1){
+        z = 0;
+        movementPath = null;
+        move = "no";
+      }
+    }
+  }
+    //print(q.peek().moveCost);
 
 }
 
