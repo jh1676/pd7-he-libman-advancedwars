@@ -56,7 +56,7 @@ class Game implements State {
   void drawTintTiles(){
     if (selected != null){
       for (Tile t: selected.getMoveLocs()){
-        tint(0,0,100);
+        tint(0,220,0,125);
         t.draw();
         tint(255,255,255);
       }
@@ -134,7 +134,14 @@ class Game implements State {
     for (Unit u: units){
       if (u.x == x && u.y == y && selected == null) {
         selected = u;
+        return;
+      }else if (selected != null && u.x == x && u.y == y){
+        return;
       }
     }
+    if (selected != null){
+      selected.moveTo(x,y);
+    }
   }
+      
 }
