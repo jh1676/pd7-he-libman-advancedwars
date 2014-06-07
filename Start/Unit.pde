@@ -160,7 +160,6 @@ abstract class Unit {
     PriorityQueue<Path> q = new PriorityQueue<Path>(10, new PathComparator());
     ArrayList<Tile> visited = new ArrayList<Tile>();
     Tile[][] tiles = ((Game)Start.s).tiles;
-<<<<<<< HEAD
     q.add(new Path(tiles[this.y][this.x],x,y));
     Path current = q.peek();
     while(! q.peek().found(x,y)){
@@ -184,10 +183,7 @@ abstract class Unit {
         Path right = current.add(tiles[current.y][current.x + 1]);
         q.add(right);
       }catch(IndexOutOfBoundsException e){}
-=======
-    q.add(new Path(tiles[y][x], x, y));
-    while (q.peek ().getLast().found(x, y)) {
->>>>>>> 38acb79bc9f266244901d24a8809ec7a586ff8cc
+
     } 
     for (Tile r: current.p){
       print("  CS: " + q.size());
