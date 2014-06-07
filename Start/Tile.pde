@@ -36,5 +36,9 @@ abstract class Tile {
   void highlight() {
     
   }
+  
+  double distance(int a, int b){
+    return Math.abs(x - a) + Math.abs(y - b);
+  }
 }
 
