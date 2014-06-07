@@ -110,12 +110,36 @@ abstract class Unit {
   
   void moveTo(int x, int y) {
     PriorityQueue<Path> q = new PriorityQueue<Path>(10, new PathComparator());
-    //ArrayList<Tile> visited = new ArrayList<Tile>();
+    ArrayList<Tile> visited = new ArrayList<Tile>();
     Tile[][] tiles = ((Game)Start.s).tiles;
-    q.add(new Path(tiles[y][x],x,y));
-    while(q.peek().getLast().found(x,y)){
-     
+    q.add(new Path(tiles[this.y][this.x],x,y));
+    Path current = q.peek();
+    while(! q.peek().found(x,y)){
+      current = q.poll();
+      print("x: " + current.x + " y: " + current.y);
+      try{
+        Path up = current.add(tiles[current.y - 1][current.x]);
+        print(" up ");
+        q.add(up);
+      }catch(IndexOutOfBoundsException e){}
+      try{
+        Path down = current.add(tiles[current.y + 1][current.x]);
+        print(" down ");
+        q.add(down);
+      }catch(IndexOutOfBoundsException e){}
+      try{
+        Path left = current.add(tiles[current.y][current.x - 1]);
+        q.add(left);
+      }catch(IndexOutOfBoundsException e){}
+      try{
+        Path right = current.add(tiles[current.y][current.x + 1]);
+        q.add(right);
+      }catch(IndexOutOfBoundsException e){}
     } 
+    for (Tile r: current.p){
+      print("  CS: " + q.size());
+      print("a");
+    }
     //print(q.peek().moveCost);
   }
 
