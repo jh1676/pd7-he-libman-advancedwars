@@ -66,7 +66,8 @@ abstract class Unit {
   ArrayList<Tile> getMoveLocs() {
     ArrayList<Tile> p = new ArrayList<Tile>();
     getMoveLocs(maxMovePoints, p, x, y);
-    p.remove(remove(tiles[y][x]));
+    Tile[][] tiles = ((Game)Start.s).tiles;
+    p.remove((tiles[y][x]));
     return p;
   }
 
@@ -101,10 +102,14 @@ abstract class Unit {
   }
   void goLeft() {
     move = "left";
-
+  }
   boolean isMouseOver(){//should only activate for units in the unitList bar in map editor, but potentially buggy
 
     return (mouseX >= this.x && mouseX <= this.x + 16 && mouseY >= this.y && mouseY <= this.y + 16);
+  }
+  
+  void moveTo(int x, int y) {
+    
   }
 }
 
