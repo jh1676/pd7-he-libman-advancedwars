@@ -30,11 +30,7 @@ abstract class Unit {
   void draw(int x, int y) {
     image(loadImage("sprites/sprite" + animations[currentFrame] + ".png"), x, y);
   }
-  /*void draw(int x, int y) {
-   image(loadImage("sprites/sprite" + animations[currentFrame] + ".png"),x,y);
-   >>>>>>> ca54b99d1f9c31148f174cdcbfdeea6c31334d98
-   nextFrame();
-   }*/
+
   void draw() {
     if (move.equals("no")) {
       image(loadImage("sprites/sprite" + animations[currentFrame] + ".png"), x * 16, y * 16);
@@ -105,11 +101,9 @@ abstract class Unit {
   }
   void goLeft() {
     move = "left";
-  }  
-  /*Tile[] getMoveLocs() {
-   
-   }*/
-  boolean isMouseOver() {//should only activate for units in the unitList bar in map editor, but potentially buggy
+
+  boolean isMouseOver(){//should only activate for units in the unitList bar in map editor, but potentially buggy
+
     return (mouseX >= this.x && mouseX <= this.x + 16 && mouseY >= this.y && mouseY <= this.y + 16);
   }
 }
