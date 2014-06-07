@@ -6,8 +6,8 @@ class RedSoldier extends Unit{
     setAnimations(sprites);
    */ 
     
-  public RedSoldier(int x, int y, color c){
-    super(x,y,20,c, 3);
+  public RedSoldier(int x, int y){
+    super(x,y,20,3);
     int[] sprites = {1,2,3,2};
     setAnimations(sprites);
   }

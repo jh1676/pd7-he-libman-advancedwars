@@ -1,15 +1,14 @@
 abstract class Unit {
   int health, currentFrame, i, d, x, y;//x and y coors are equal to tile index, unless unit is in the mapeditor bar
-  color c;
+  private color c = color(255,255,255);
   int[] animations;
   int maxMovePoints, movePoints;
   String move = "no";
 
 
 
-  public Unit(int x, int y, int health, color c, int movePoints) {
+  public Unit(int x, int y, int health, int movePoints) {
     this.health = health;
-    this.c = c;
     this.x = x;
     this.y = y;
     this.maxMovePoints = movePoints;
@@ -110,6 +109,10 @@ abstract class Unit {
   
   void moveTo(int x, int y) {
     
+  }
+  
+  void setColor(color c) {
+    this.c = c;
   }
 }
 

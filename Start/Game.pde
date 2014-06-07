@@ -1,13 +1,28 @@
+import java.util.*;
+
 class Game implements State {
   Tile[][] tiles;
-  ArrayList<Unit> units;
   Unit selected = null;
   int numRows = 26, numCols = 26;
   int selX, selY;
+  int numPlayers;
+
+  ArrayList<Player> players = new ArrayList<Player>();
+  Queue<Player> turns;
+
   public Game() {
     String[] map = loadStrings("map.txt");
     tiles = new Tile[26][26];
-    units = new ArrayList<Unit>();
+
+    this.numPlayers = 2;
+    turns = new LinkedList<Player>();
+    for (int i = 0; i < numPlayers; i++) {
+      color c = color(random(255), random(255), random(255));
+      Player p = new Player(c); 
+      players.add(p);
+      turns.add(p);
+    }
+
     if (map != null) {
       for (int i = 0; i < map.length; i++) {
         String[] p = map[i].split(",");
@@ -33,7 +48,7 @@ class Game implements State {
           }
         }
       }
-      units.add(new RedSoldier(2,2, color(128,128,128)));
+      players.get(0).addUnit(new RedSoldier(2, 2));
     }
 
     for (int i = 0; i < tiles.length; i++) {
@@ -43,22 +58,20 @@ class Game implements State {
         }
       }
     }
-
-
   }
-  void drawTiles(){
+  void drawTiles() {
     for (int a = 0; a < tiles.length; a++) {
       for (int b = 0; b < tiles[0].length; b++) {
         tiles[a][b].draw();
       }
     }
   }
-  void drawTintTiles(){
-    if (selected != null){
-      for (Tile t: selected.getMoveLocs()){
-        tint(0,220,0,125);
+  void drawTintTiles() {
+    if (selected != null) {
+      for (Tile t : selected.getMoveLocs ()) {
+        tint(0, 220, 0, 125);
         t.draw();
-        tint(255,255,255);
+        tint(255, 255, 255);
       }
     }
   }
@@ -66,29 +79,34 @@ class Game implements State {
     drawTiles();
     drawTintTiles();
     /*for (int a = 0; a < tiles.length; a++) {
-      for (int b = 0; b < tiles[0].length; b++) {
-        tiles[a][b].drawUnit();
+     for (int b = 0; b < tiles[0].length; b++) {
+     tiles[a][b].drawUnit();
+     }
+     }*/
+    for (Player p : players) {
+      ArrayList<Unit> units = p.getUnits();
+      for (Unit a : units) {
+        a.draw();
       }
-    }*/
-    for (Unit a: units){
-      a.draw();
     }
     mouseOver();
   } 
 
-  void keyPressed(){
+  void keyPressed() {
+    /*
     if (key == 's') {
-      units.get(0).goDown();
-    }
-    if (key == 'w') {
-      units.get(0).goUp();
-    }
-    if (key == 'a') {
-      units.get(0).goLeft();
-    }
-    if (key == 'd') {
-      units.get(0).goRight();
-    }
+     units.get(0).goDown();
+     }
+     if (key == 'w') {
+     units.get(0).goUp();
+     }
+     if (key == 'a') {
+     units.get(0).goLeft();
+     }
+     if (key == 'd') {
+     units.get(0).goRight();
+     }
+     */
   }
 
 
@@ -113,37 +131,40 @@ class Game implements State {
     }
     int x = (mouseX/16);
     int y = (mouseY/16);
-    changeUnitTile(x,y);
+    changeUnitTile(x, y);
   }
   /*void changeUnitTile(int x, int y){
-    if (tiles[y][x].unit != null && selected == null) {
-      selected = tiles[y][x].unit;
-      selX = x;
-      selY = y;
-<<<<<<< HEAD
-      System.out.println(tiles[y][x].unit.getMoveLocs());
-=======
-    }else if (tiles[y][x].unit == null && selected != null) {
-      tiles[y][x].unit = selected;
-      selected = null;
-      tiles[selY][selX].unit = null;
->>>>>>> ca54b99d1f9c31148f174cdcbfdeea6c31334d98
-    }
-  }*/
-  void changeUnitTile(int x, int y){
-    for (Unit u: units){
-      if (u.x == x && u.y == y && selected == null) {
-        selected = u;
-        return;
-      }else if (selected != null && selected.x == x && selected.y == y){
-        selected = null;
-      }else if (selected != null && u.x == x && u.y == y){
-        return;
+   if (tiles[y][x].unit != null && selected == null) {
+   selected = tiles[y][x].unit;
+   selX = x;
+   selY = y;
+   <<<<<<< HEAD
+   System.out.println(tiles[y][x].unit.getMoveLocs());
+   =======
+   }else if (tiles[y][x].unit == null && selected != null) {
+   tiles[y][x].unit = selected;
+   selected = null;
+   tiles[selY][selX].unit = null;
+   >>>>>>> ca54b99d1f9c31148f174cdcbfdeea6c31334d98
+   }
+   }*/
+  void changeUnitTile(int x, int y) {
+    for (Player p : players) {
+      ArrayList<Unit> units = p.getUnits();
+      for (Unit u : units) {
+        if (u.x == x && u.y == y && selected == null) {
+          selected = u;
+          return;
+        } else if (selected != null && selected.x == x && selected.y == y) {
+          selected = null;
+        } else if (selected != null && u.x == x && u.y == y) {
+          return;
+        }
+      }
+      if (selected != null) {
+        selected.moveTo(x, y);
       }
     }
-    if (selected != null){
-      selected.moveTo(x,y);
-    }
   }
-      
 }
+

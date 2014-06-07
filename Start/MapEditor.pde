@@ -22,8 +22,8 @@ class MapEditor implements State {
     tileList.add(new Road6Tile(0, 442));
     tileList.add(new WaterTile(0, 442));
 
-    unitList.add(new RedSoldier(0, 462, color(0,0,0)));
-    
+    unitList.add(new RedSoldier(0, 462, color(0, 0, 0)));
+
     for (int i = 0; i < tileList.size (); i++) {
       tileList.get(i).setX((400/(tileList.size() + 1) * (i +1)));
     }
@@ -44,7 +44,7 @@ class MapEditor implements State {
     }
     mouseOver();
     strokeWeight(2);
-    fill(0,0,0);
+    fill(0, 0, 0);
     textAlign(LEFT);
     text("Press s to save. Press m to go back to the menu", 0, 432);
   }
@@ -56,7 +56,7 @@ class MapEditor implements State {
       for (int cols = 0; cols < game.numCols; cols++) {
         line += game.tiles[rows][cols].name + ",";
       }
-      line = line.substring(0,line.length() - 1);
+      line = line.substring(0, line.length() - 1);
       map[rows] = line;
     }
     saveStrings("map.txt", map);
@@ -113,7 +113,7 @@ class MapEditor implements State {
     if (mouseY <= 416) {
       int x = mouseX/16*16;
       int y = mouseY/16*16;
-      if (type.equals("tile")){
+      if (type.equals("tile")) {
         Tile nt = new GrassTile(x, y);
         if (selected instanceof GrassTile) {
           nt = new GrassTile(x, y);
@@ -133,9 +133,9 @@ class MapEditor implements State {
           nt = new WaterTile(x, y);
         }
         game.tiles[y/16][x/16] = nt;
-      }else{
+      } else if(type.equals("unit")){
         if (selectedUnit instanceof RedSoldier) {
-          game.units.add(new RedSoldier(x / 16,y / 16, color(255,255,255)));
+          game.units.add(new RedSoldier(x / 16, y / 16, color(255, 255, 255)));
         }
       }
     }
@@ -151,9 +151,9 @@ class MapEditor implements State {
 
   void keyPressed() {
     if (key == 's') {
-     save(); 
+      save();
     } else if (key == 'm') {
-     s = new StartMenu(); 
+      s = new StartMenu();
     }
   }
 }
