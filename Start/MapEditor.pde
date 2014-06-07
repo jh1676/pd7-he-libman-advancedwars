@@ -22,7 +22,13 @@ class MapEditor implements State {
     tileList.add(new Road6Tile(0, 442));
     tileList.add(new WaterTile(0, 442));
 
-    unitList.add(new RedSoldier(0, 462, color(0, 0, 0)));
+    unitList.add(new RedSoldier(0, 462));
+    unitList.add(new MechSoldier(0, 462));
+    unitList.add(new ReconUnit(0, 462));
+    unitList.add(new TankUnit(0, 462));
+    unitList.add(new BigTank(0, 462));
+    unitList.add(new APCUnit(0, 462));
+    unitList.add(new ArtilleryUnit(0, 462));
 
     for (int i = 0; i < tileList.size (); i++) {
       tileList.get(i).setX((400/(tileList.size() + 1) * (i +1)));
@@ -133,28 +139,40 @@ class MapEditor implements State {
           nt = new WaterTile(x, y);
         }
         game.tiles[y/16][x/16] = nt;
-      } else if(type.equals("unit")){
+      } else if (type.equals("unit")) {
         if (selectedUnit instanceof RedSoldier) {
-          game.units.add(new RedSoldier(x / 16, y / 16, color(255, 255, 255)));
+          game.players.get(0).addUnit(new RedSoldier(x/16, y/16));
+        } else if (selectedUnit instanceof MechSoldier) {
+          game.players.get(0).addUnit(new MechSoldier(x/16, y/16));
+        } else if (selectedUnit instanceof ReconUnit) {
+          game.players.get(0).addUnit(new ReconUnit(x/16, y/16));
+        } else if (selectedUnit instanceof TankUnit) {
+          game.players.get(0).addUnit(new TankUnit(x/16, y/16));
+        } else if (selectedUnit instanceof BigTank) {
+          game.players.get(0).addUnit(new BigTank(x/16, y/16));
+        } else if (selectedUnit instanceof APCUnit) {
+          game.players.get(0).addUnit(new APCUnit(x/16, y/16));
+        } else if (selectedUnit instanceof ArtilleryUnit) {
+          game.players.get(0).addUnit(new ArtilleryUnit(x/16, y/16));
         }
       }
     }
-    /*
+      /*
     for (int i = 0; i < game.tiles.length; i++){  
-     for (int j = 0; j < game.tiles[0].length; j++){  
-     if (game.tiles[i][j].isMouseOver()){
-     game.tiles[i][j] = new Tile(j * 16, i * 16, selectedDef, selectedMoveCost, selectedImg);
-     }   
-     }
-     } */
-  }
+       for (int j = 0; j < game.tiles[0].length; j++){  
+       if (game.tiles[i][j].isMouseOver()){
+       game.tiles[i][j] = new Tile(j * 16, i * 16, selectedDef, selectedMoveCost, selectedImg);
+       }   
+       }
+       } */
+    }
 
-  void keyPressed() {
-    if (key == 's') {
-      save();
-    } else if (key == 'm') {
-      s = new StartMenu();
+    void keyPressed() {
+      if (key == 's') {
+        save();
+      } else if (key == 'm') {
+        s = new StartMenu();
+      }
     }
   }
-}
 

@@ -1,19 +1,36 @@
 import java.util.*;
+
+/*class Recolor {
+ int tol;
+ color oldColor;
+ color newColor;
+ public Recolor(int tol, color old, color newC) {
+ this.tol = tol;
+ oldColor = old;
+ newColor = newC;
+ }
+ } */
+
+
 abstract class Unit {
-  int health, currentFrame, i, d, x, y;//x and y coors are equal to tile index, unless unit is in the mapeditor bar
-  color c;
+  int health = 10, currentFrame, i, d, x, y;//x and y coors are equal to tile index, unless unit is in the mapeditor bar
+  private color c = color(255, 255, 255);
+
   int[] animations;
   int maxMovePoints, movePoints;
   String move = "no";
+  Player owner;
+  HashMap<Integer, PImage> sprites;
 
 
-  public Unit(int x, int y, int health, color c, int movePoints) {
-    this.health = health;
-    this.c = c;
+
+  public Unit(int x, int y, int movePoints) {
+
     this.x = x;
     this.y = y;
     this.maxMovePoints = movePoints;
     this.movePoints = movePoints;
+    sprites = defaultUnitImages;
   }
   void setAnimations(int[] animations) {
     this.animations = animations;
@@ -28,12 +45,17 @@ abstract class Unit {
   }
 
   void draw(int x, int y) {
-    image(loadImage("sprites/sprite" + animations[currentFrame] + ".png"), x, y);
+    // image(loadImage("sprites/sprite" + animations[currentFrame] + ".png"), x, y);
+    image(sprites.get(animations[currentFrame]), x, y);
   }
 
   void draw() {
+    int realX = x *16;
+    int realY = y * 16;
     if (move.equals("no")) {
-      image(loadImage("sprites/sprite" + animations[currentFrame] + ".png"), x * 16, y * 16);
+      //    PImage pI = loadImage("sprites/sprite" + animations[currentFrame] + ".png"); 
+      image(sprites.get(animations[currentFrame]), x*16, y*16);
+      // image(pI, x * 16, y * 16);
     } else if (d == 16) {
       d = 0;
       if (move.equals("up")) {
@@ -46,43 +68,63 @@ abstract class Unit {
         x--;
       }
       move = "no";
-      image(loadImage("sprites/sprite" + animations[currentFrame] + ".png"), x * 16, y * 16);
+      image(sprites.get(animations[currentFrame]), x*16, y*16);
     } else {
       d++;
       if (move.equals("up")) {
-        image(loadImage("sprites/sprite" + animations[currentFrame] + ".png"), x * 16, y * 16 - d);
+        realY -= d;
+        image(sprites.get(animations[currentFrame]), x*16, y*16);
       } else if (move.equals("down")) {
-        image(loadImage("sprites/sprite" + animations[currentFrame] + ".png"), x * 16, y * 16 + d);
+        realY += d;
+        image(sprites.get(animations[currentFrame]), x*16, y*16);
       } else if (move.equals("right")) {
-        image(loadImage("sprites/sprite" + animations[currentFrame] + ".png"), x * 16 + d, y * 16);
+        realX += d;
+        image(sprites.get(animations[currentFrame]), x*16, y*16);
       } else {
-        image(loadImage("sprites/sprite" + animations[currentFrame] + ".png"), x * 16 - d, y * 16);
+        realX -= d;
+        image(sprites.get(animations[currentFrame]), x*16, y*16);
       }
     }
+
     nextFrame();
   }
 
+  void recolor(PImage p, color old, color newI, int tol) {
 
+    for (int x = 0; x < p.width; x++) {
+      for (int y = 0; y < p.height; y++ ) {
+        int loc = x + y*p.width;
+        float dist = sqrt(pow((red(old) - red(p.pixels[loc])), 2) + pow((green(old) - green(p.pixels[loc])), 2) + pow((blue(old) - blue(p.pixels[loc])), 2));
+        System.out.println(dist);
+        if (dist < tol) {
+          p.pixels[loc] = newI;
+        }
+      }
+    }
+  }
   ArrayList<Tile> getMoveLocs() {
     ArrayList<Tile> p = new ArrayList<Tile>();
     getMoveLocs(maxMovePoints, p, x, y);
     Tile[][] tiles = ((Game)Start.s).tiles;
     p.remove((tiles[y][x]));
+
+    Set setItems = new LinkedHashSet(p);
+    p.clear();
+    p.addAll(setItems);
+
     return p;
   }
 
   void getMoveLocs(int pointsLeft, ArrayList<Tile> current, int x, int y) {
     Tile[][] tiles = ((Game)Start.s).tiles;
-
     if (pointsLeft > 0 && x >= 0 && y >= 0 && x < 26 && y < 26) {
-      if (!current.contains(tiles[y][x])) {
-        current.add(tiles[y][x]);
-        pointsLeft = pointsLeft - tiles[y][x].moveCost;
-        getMoveLocs(pointsLeft, current, x+1, y);
-        getMoveLocs(pointsLeft, current, x-1, y);
-        getMoveLocs(pointsLeft, current, x, y + 1);
-        getMoveLocs(pointsLeft, current, x, y-1);
-      }
+
+      current.add(tiles[y][x]);
+      pointsLeft = pointsLeft - tiles[y][x].moveCost;
+      getMoveLocs(pointsLeft, current, x+1, y);
+      getMoveLocs(pointsLeft, current, x-1, y);
+      getMoveLocs(pointsLeft, current, x, y + 1);
+      getMoveLocs(pointsLeft, current, x, y-1);
     }
   }
 
@@ -103,15 +145,22 @@ abstract class Unit {
   void goLeft() {
     move = "left";
   }
-  boolean isMouseOver(){//should only activate for units in the unitList bar in map editor, but potentially buggy
+  boolean isMouseOver() {//should only activate for units in the unitList bar in map editor, but potentially buggy
 
     return (mouseX >= this.x && mouseX <= this.x + 16 && mouseY >= this.y && mouseY <= this.y + 16);
   }
-  
+
+
+
+  void setColor(color c) {
+    this.c = c;
+  }
+
   void moveTo(int x, int y) {
     PriorityQueue<Path> q = new PriorityQueue<Path>(10, new PathComparator());
     ArrayList<Tile> visited = new ArrayList<Tile>();
     Tile[][] tiles = ((Game)Start.s).tiles;
+<<<<<<< HEAD
     q.add(new Path(tiles[this.y][this.x],x,y));
     Path current = q.peek();
     while(! q.peek().found(x,y)){
@@ -135,6 +184,10 @@ abstract class Unit {
         Path right = current.add(tiles[current.y][current.x + 1]);
         q.add(right);
       }catch(IndexOutOfBoundsException e){}
+=======
+    q.add(new Path(tiles[y][x], x, y));
+    while (q.peek ().getLast().found(x, y)) {
+>>>>>>> 38acb79bc9f266244901d24a8809ec7a586ff8cc
     } 
     for (Tile r: current.p){
       print("  CS: " + q.size());
@@ -142,6 +195,9 @@ abstract class Unit {
     }
     //print(q.peek().moveCost);
   }
+
+  
+
 
 }
 
