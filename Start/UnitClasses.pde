@@ -22,6 +22,7 @@ public class MechSoldier extends Unit {
     int[] sprites = {
       7, 8
     };
+    setAnimations(sprites);
   }
 }
 
@@ -42,6 +43,7 @@ public class TankUnit extends Unit {
     int[] sprites = {
       14, 15, 16
     };
+    setAnimations(sprites);
   }
 }
 public class BigTank extends Unit {

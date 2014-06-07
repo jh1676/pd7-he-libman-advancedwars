@@ -48,10 +48,8 @@ class Game implements State {
           }
         }
       }
-
-
       players.get(0).addUnit(new RedSoldier(2, 2));
-      players.get(0).addUnit(new APCUnit(7, 5));
+      players.get(0).addUnit(new APCUnit(7,5));
     }
 
     for (int i = 0; i < tiles.length; i++) {
@@ -81,6 +79,11 @@ class Game implements State {
   void draw() {
     drawTiles();
     drawTintTiles();
+    /*for (int a = 0; a < tiles.length; a++) {
+     for (int b = 0; b < tiles[0].length; b++) {
+     tiles[a][b].drawUnit();
+     }
+     }*/
     for (Player p : players) {
       ArrayList<Unit> units = p.getUnits();
       for (Unit a : units) {
@@ -155,12 +158,11 @@ class Game implements State {
           return;
         } else if (selected != null && selected.x == x && selected.y == y) {
           selected = null;
-          return;
         } else if (selected != null && u.x == x && u.y == y) {
           return;
         }
       }
-    }
+    
     if (selected != null) {
       for (Tile g : selected.getMoveLocs ()) {
         if (g.x / 16 == x && g.y / 16 == y) {
@@ -170,6 +172,7 @@ class Game implements State {
         }
       }
     }
+  }
   }
 }
 
