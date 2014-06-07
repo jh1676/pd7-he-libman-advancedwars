@@ -135,6 +135,8 @@ class Game implements State {
       if (u.x == x && u.y == y && selected == null) {
         selected = u;
         return;
+      }else if (selected != null && selected.x == x && selected.y == y){
+        selected = null;
       }else if (selected != null && u.x == x && u.y == y){
         return;
       }

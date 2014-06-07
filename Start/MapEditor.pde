@@ -88,7 +88,7 @@ class MapEditor implements State {
     }
   }
 
-  void mouseClicked () {
+  void mouseClicked() {
     for (Tile t : tileList) {
       if (t.isMouseOver()) {
         /*selectedImg = t.img;
