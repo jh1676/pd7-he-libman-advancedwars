@@ -49,6 +49,7 @@ class Game implements State {
         }
       }
       players.get(0).addUnit(new RedSoldier(2, 2));
+      players.get(0).addUnit(new APCUnit(7,5));
     }
 
     for (int i = 0; i < tiles.length; i++) {

@@ -1,6 +1,6 @@
 class StartMenu implements State {
   public StartMenu() {
-    size(416, 480);
+    size(416, 496);
   } 
 
   void draw() {
