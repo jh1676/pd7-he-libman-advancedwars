@@ -1,14 +1,15 @@
+import java.util.*;
 abstract class Unit {
   int health, currentFrame, i, d, x, y;//x and y coors are equal to tile index, unless unit is in the mapeditor bar
-  private color c = color(255,255,255);
+  color c;
   int[] animations;
   int maxMovePoints, movePoints;
   String move = "no";
 
 
-
-  public Unit(int x, int y, int health, int movePoints) {
+  public Unit(int x, int y, int health, color c, int movePoints) {
     this.health = health;
+    this.c = c;
     this.x = x;
     this.y = y;
     this.maxMovePoints = movePoints;
@@ -108,11 +109,15 @@ abstract class Unit {
   }
   
   void moveTo(int x, int y) {
-    
+    PriorityQueue<Path> q = new PriorityQueue<Path>(10, new PathComparator());
+    //ArrayList<Tile> visited = new ArrayList<Tile>();
+    Tile[][] tiles = ((Game)Start.s).tiles;
+    q.add(new Path(tiles[y][x],x,y));
+    while(q.peek().getLast().found(x,y)){
+     
+    } 
+    //print(q.peek().moveCost);
   }
-  
-  void setColor(color c) {
-    this.c = c;
-  }
+
 }
 

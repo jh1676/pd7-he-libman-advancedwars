@@ -1,5 +1,5 @@
 class Player {
-  Color c;
+  color c;
   private ArrayList<Unit> units = new ArrayList<Unit>();
   
   public Player(color c) {
