@@ -79,12 +79,14 @@ abstract class Unit {
     Tile[][] tiles = ((Game)Start.s).tiles;
     System.out.println(pointsLeft);
     if (pointsLeft > 0 && x >= 0 && y >= 0 && x < 26 && y < 26) {
-      current.add(tiles[y][x]);
-      pointsLeft = pointsLeft - tiles[y][x].moveCost;
-      getMoveLocs(pointsLeft, current, x+1, y);
-      getMoveLocs(pointsLeft, current, x-1, y);
-      getMoveLocs(pointsLeft, current, x+1, y + 1);
-      getMoveLocs(pointsLeft, current, x-1, y+1);
+      if (!current.contains(tiles[y][x])) {
+        current.add(tiles[y][x]);
+        pointsLeft = pointsLeft - tiles[y][x].moveCost;
+        getMoveLocs(pointsLeft, current, x+1, y);
+        getMoveLocs(pointsLeft, current, x-1, y);
+        getMoveLocs(pointsLeft, current, x, y + 1);
+        getMoveLocs(pointsLeft, current, x, y-1);
+      }
     }
   }
 
