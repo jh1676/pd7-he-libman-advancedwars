@@ -15,7 +15,12 @@ abstract class Tile {
   void draw() {
     image(img, x, y);
   }
-
+  int getX(){
+    return x / 16;
+  }
+  int getY(){
+    return y / 16;
+  }
   /*void drawUnit() {
     if (unit != null) {
       unit.draw(x, y);
@@ -34,7 +39,7 @@ abstract class Tile {
   }
   
   double distance(int a, int b){
-    return Math.abs(x - a) + Math.abs(y - b);
+    return Math.abs(getX() - a) + Math.abs(getY() - b);
   }
 }
 

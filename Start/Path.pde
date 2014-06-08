@@ -3,16 +3,16 @@ class Path{
   int x, y;
   ArrayList<Tile> p = new ArrayList<Tile>();
   public Path(Tile o,int x, int y){
+    p.add(o);
     this.x = x;
     this.y = y;
-    p.add(o);
-    setDistance(x,y);
+    setDistance();
   }
   public Path(ArrayList<Tile> p, int x, int y){
+    this.p = p;
     this.x = x;
     this.y = y;
-    this.p = p;
-    setDistance(x,y);
+    setDistance();
   }
   Tile getLast(){
     return p.get(p.size() - 1);
@@ -33,13 +33,13 @@ class Path{
       newPath.add(t);
     }
     newPath.add(m);
-    return new Path(newPath,m.x,m.y);
+    return new Path(newPath,x,y);
   }
-  void setDistance(int x, int y){
+  void setDistance(){
     distance = p.get(p.size() - 1).distance(x,y);
   }
-  boolean found(int a, int b){
-    return (x == a && y == b); 
+  boolean found(){
+    return (getLast().getX() == x && getLast().getY() == y); 
   }
 }
   

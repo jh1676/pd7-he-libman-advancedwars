@@ -1,5 +1,3 @@
-import java.util.*;
-
 class Game implements State {
   Tile[][] tiles;
   Unit selected = null;
@@ -9,7 +7,7 @@ class Game implements State {
 
   ArrayList<Player> players = new ArrayList<Player>();
   Queue<Player> turns;
-
+  
   public Game() {
     String[] map = loadStrings("map.txt");
     tiles = new Tile[26][26];
@@ -62,19 +60,20 @@ class Game implements State {
       }
     }
   }
-  void drawTiles() {
+  
+  void drawTiles(){
     for (int a = 0; a < tiles.length; a++) {
       for (int b = 0; b < tiles[0].length; b++) {
         tiles[a][b].draw();
       }
     }
   }
-  void drawTintTiles() {
-    if (selected != null) {
-      for (Tile t : selected.getMoveLocs ()) {
-        tint(0, 220, 0, 125);
+  void drawTintTiles(){
+    if (selected != null){
+      for (Tile t: selected.getMoveLocs()){
+        tint(0,220,0,125);
         t.draw();
-        tint(255, 255, 255);
+        tint(255,255,255);
       }
     }
   }
@@ -101,21 +100,8 @@ class Game implements State {
     mouseOver();
   } 
 
-  void keyPressed() {
-    /*
-    if (key == 's') {
-     units.get(0).goDown();
-     }
-     if (key == 'w') {
-     units.get(0).goUp();
-     }
-     if (key == 'a') {
-     units.get(0).goLeft();
-     }
-     if (key == 'd') {
-     units.get(0).goRight();
-     }
-     */
+  void keyPressed(){
+    
   }
 
 
@@ -140,8 +126,25 @@ class Game implements State {
     }
     int x = (mouseX/16);
     int y = (mouseY/16);
-    changeUnitTile(x, y);
+    changeUnitTile(x,y);
   }
+
+  /*void changeUnitTile(int x, int y){
+<<<<<<< HEAD
+    if (tiles[y][x].unit != null && selected == null) {
+      selected = tiles[y][x].unit;
+      selX = x;
+      selY = y;
+<<<<<<< HEAD
+      System.out.println(tiles[y][x].unit.getMoveLocs());
+=======
+    }else if (tiles[y][x].unit == null && selected != null) {
+      tiles[y][x].unit = selected;
+      selected = null;
+      tiles[selY][selX].unit = null;
+>>>>>>> ca54b99d1f9c31148f174cdcbfdeea6c31334d98
+    }
+  }*/
 
   void changeUnitTile(int x, int y) {
     for (Player p : players) {
@@ -169,4 +172,3 @@ class Game implements State {
     }
   }
 }
-
