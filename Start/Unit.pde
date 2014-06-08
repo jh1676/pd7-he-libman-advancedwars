@@ -44,15 +44,11 @@ abstract class Unit {
   void draw(int x, int y) {
    // image(loadImage("sprites/sprite" + animations[currentFrame] + ".png"), x, y);
     image(sprites.get(animations[currentFrame]),x,y);
-  }
+  }//image(sprites.get(animations[currentFrame]),x*16,y*16);
 
   void draw() {
-    int realX = x *16;
-    int realY = y * 16;
     if (move.equals("no")) {
-  //    PImage pI = loadImage("sprites/sprite" + animations[currentFrame] + ".png"); 
-       image(sprites.get(animations[currentFrame]),x*16,y*16);
-     // image(pI, x * 16, y * 16);
+      image(sprites.get(animations[currentFrame]),x*16,y*16);;
     } else if (d == 16) {
       d = 0;
       if (move.equals("up")) {
@@ -65,21 +61,17 @@ abstract class Unit {
         x--;
       }
       move = "no";
-      image(loadImage("sprites/sprite" + animations[currentFrame] + ".png"), x * 16, y * 16);
+      image(sprites.get(animations[currentFrame]), x * 16, y * 16);
     } else {
       d++;
       if (move.equals("up")) {
-        realY -= d;
-        image(sprites.get(animations[currentFrame]),x*16,y*16);
+        image(sprites.get(animations[currentFrame]), x * 16, y * 16 - d);
       } else if (move.equals("down")) {
-        realY += d;
-        image(sprites.get(animations[currentFrame]),x*16,y*16);
+        image(sprites.get(animations[currentFrame]), x * 16, y * 16 + d);
       } else if (move.equals("right")) {
-        realX += d;
-        image(sprites.get(animations[currentFrame]),x*16,y*16);
+        image(sprites.get(animations[currentFrame]), x * 16 + d, y * 16);
       } else {
-        realX -= d;
-        image(sprites.get(animations[currentFrame]),x*16,y*16);
+        image(sprites.get(animations[currentFrame]), x * 16 - d, y * 16);
       }
     }
     nextFrame();
@@ -181,8 +173,6 @@ abstract class Unit {
       }
     }
   }
-    //print(q.peek().moveCost);
-
   void setColor(color c) {
     this.c = c;
   }

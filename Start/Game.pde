@@ -95,6 +95,7 @@ class Game implements State {
       ArrayList<Unit> units = p.getUnits();
       for (Unit a : units) {
         a.draw();
+        a.moveOnPath();
       }
     }
     mouseOver();
