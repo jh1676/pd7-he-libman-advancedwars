@@ -2,8 +2,11 @@ class MapEditor implements State {
   Game game;
   ArrayList<Tile> tileList = new ArrayList<Tile>();
   ArrayList<Unit> unitList = new ArrayList<Unit>();
+  ArrayList<Building> buildingList = new ArrayList<Building>();
+
   Tile selected = new GrassTile(0, 0);
   Unit selectedUnit;
+  Building selectedBuilding;
   String type = "tile";
   /*PImage selectedImg = Start.grass;
    int selectedDef = 1;
@@ -21,6 +24,7 @@ class MapEditor implements State {
     tileList.add(new Road5Tile(0, 442));
     tileList.add(new Road6Tile(0, 442));
     tileList.add(new WaterTile(0, 442));
+    tileList.add(new MountainTile(0, 442));
 
     unitList.add(new RedSoldier(0, 462));
     unitList.add(new MechSoldier(0, 462));
@@ -30,11 +34,16 @@ class MapEditor implements State {
     unitList.add(new APCUnit(0, 462));
     unitList.add(new ArtilleryUnit(0, 462));
 
+    buildingList.add(new HQ(0, 482));
     for (int i = 0; i < tileList.size (); i++) {
       tileList.get(i).setX((400/(tileList.size() + 1) * (i +1)));
     }
     for (int i = 0; i < unitList.size (); i++) {
       unitList.get(i).x = ((400/(unitList.size() + 1) * (i +1)));
+    }
+
+    for (int i = 0; i < buildingList.size (); i++) {
+      buildingList.get(i).x = ((400/(buildingList.size() + 1) * (i +1)));
     }
   }
 
@@ -48,6 +57,12 @@ class MapEditor implements State {
     for (int i = 0; i < unitList.size (); i++) {
       unitList.get(i).drawList();
     }
+
+
+    for (int i = 0; i < buildingList.size (); i++) {
+      buildingList.get(i).drawMapEditor();
+    }
+
     mouseOver();
     strokeWeight(2);
     fill(0, 0, 0);
@@ -92,6 +107,19 @@ class MapEditor implements State {
         triangle(x, y+16, x, y+14, x+2, y+16);
       }
     }
+    
+    for (Building u : buildingList) {
+      if (u.isMouseOver()) {
+        int x = u.x;
+        int y = u.y;
+        fill(0, 0, 0);
+        strokeWeight(2);
+        triangle(x, y, x+2, y, x, y+2);
+        triangle(x+16, y+16, x+14, y+16, x+16, y+14);
+        triangle(x+16, y, x+14, y, x+16, y+2);
+        triangle(x, y+16, x, y+14, x+2, y+16);
+      }
+    }
   }
 
   void mouseClicked() {
@@ -116,6 +144,13 @@ class MapEditor implements State {
       }
     }
 
+    for (Building b : buildingList) {
+      if (b.isMouseOver()) {
+        selectedBuilding = b;
+        type = "building";
+        return;
+      }
+    }
     if (mouseY <= 416) {
       int x = mouseX/16*16;
       int y = mouseY/16*16;
@@ -135,6 +170,8 @@ class MapEditor implements State {
           nt = new Road5Tile(x, y);
         } else if (selected instanceof Road6Tile) {
           nt = new Road6Tile(x, y);
+        } else if (selected instanceof MountainTile) {
+          nt = new MountainTile(x, y);
         } else if (selected instanceof WaterTile) {
           nt = new WaterTile(x, y);
         }
@@ -155,24 +192,28 @@ class MapEditor implements State {
         } else if (selectedUnit instanceof ArtilleryUnit) {
           game.players.get(0).addUnit(new ArtilleryUnit(x/16, y/16));
         }
+      } else if (type.equals("building")) {
+        if(selectedBuilding instanceof HQ) { 
+         game.players.get(0).addBuilding(new HQ(x/16,y/16));
+        }       
       }
     }
-      /*
+    /*
     for (int i = 0; i < game.tiles.length; i++){  
-       for (int j = 0; j < game.tiles[0].length; j++){  
-       if (game.tiles[i][j].isMouseOver()){
-       game.tiles[i][j] = new Tile(j * 16, i * 16, selectedDef, selectedMoveCost, selectedImg);
-       }   
-       }
-       } */
-    }
+     for (int j = 0; j < game.tiles[0].length; j++){  
+     if (game.tiles[i][j].isMouseOver()){
+     game.tiles[i][j] = new Tile(j * 16, i * 16, selectedDef, selectedMoveCost, selectedImg);
+     }   
+     }
+     } */
+  }
 
-    void keyPressed() {
-      if (key == 's') {
-        save();
-      } else if (key == 'm') {
-        s = new StartMenu();
-      }
+  void keyPressed() {
+    if (key == 's') {
+      save();
+    } else if (key == 'm') {
+      s = new StartMenu();
     }
   }
+}
 

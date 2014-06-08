@@ -11,7 +11,7 @@
 
 
 abstract class Unit {
-  int health = 20, currentFrame, i, d, x, y;//x and y coors are equal to tile index, unless unit is in the mapeditor bar
+  int health = 10, currentFrame, i, d, x, y;//x and y coors are equal to tile index, unless unit is in the mapeditor bar
   private color c = color(255, 255, 255);
   int[] animations;
   int maxMovePoints, movePoints;

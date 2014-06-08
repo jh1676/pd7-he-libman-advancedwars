@@ -1,6 +1,9 @@
 class Player {
   color c;
   private ArrayList<Unit> units = new ArrayList<Unit>();
+  private ArrayList<Building> buildings = new ArrayList<Building>();
+
+  HashMap<Integer, PImage> buildingImages = new HashMap<Integer, PImage>();
   HashMap<Integer, PImage> unitImages = new HashMap<Integer, PImage>();
   public Player(color c) {
     this.c = c;
@@ -10,8 +13,15 @@ class Player {
       recolor(pI, color(248, 184, 120), c, 25);
       recolor(pI, color(240, 0, 8), c, 25);
       recolor(pI, color(128, 0, 16), c, 15);
-      recolor(pI, color(192,0,0),c,25);
-      unitImages.put(n,pI);
+      recolor(pI, color(192, 0, 0), c, 25);
+      unitImages.put(n, pI);
+    }
+
+    for (Integer n : Start.buildingImagePaths.keySet ()) {
+      PImage v = loadImage(Start.buildingImagePaths.get(n));
+      recolor(v, color(248, 160, 88), c, 5);
+      recolor(v, color(208, 64, 56), c, 5);
+      buildingImages.put(n, v);
     }
   }
 
@@ -20,13 +30,22 @@ class Player {
     p.owner = this;
     p.sprites = unitImages;
     units.add(p);
-    
+  }
+
+
+  void addBuilding(Building p) {
+    p.owner = this;
+    p.sprites = buildingImages;
+    buildings.add(p);
   }
 
   ArrayList<Unit> getUnits() {
     return units;
   }
 
+ArrayList<Building> getBuildings() {
+    return buildings;
+  }
   void recolor(PImage p, color old, color newI, int tol) {
 
     for (int x = 0; x < p.width; x++) {
