@@ -25,7 +25,8 @@ class MapEditor implements State {
     tileList.add(new Road6Tile(0, 442));
     tileList.add(new WaterTile(0, 442));
     tileList.add(new MountainTile(0, 442));
-
+    tileList.add(new TreeTile(0,442));
+    
     unitList.add(new RedSoldier(0, 462));
     unitList.add(new MechSoldier(0, 462));
     unitList.add(new ReconUnit(0, 462));
@@ -35,6 +36,9 @@ class MapEditor implements State {
     unitList.add(new ArtilleryUnit(0, 462));
 
     buildingList.add(new HQ(0, 482));
+    buildingList.add(new Factory(0, 482));
+    buildingList.add(new City(0, 482));
+
     for (int i = 0; i < tileList.size (); i++) {
       tileList.get(i).setX((400/(tileList.size() + 1) * (i +1)));
     }
@@ -71,16 +75,26 @@ class MapEditor implements State {
   }
 
   void save() {
-    String[] map = new String[game.numRows];
+ //   String[] map = new String[game.numRows];
+    ArrayList<String> map = new ArrayList<String>();
     for (int rows = 0; rows < game.numRows; rows++) {
       String line = "";
       for (int cols = 0; cols < game.numCols; cols++) {
         line += game.tiles[rows][cols].name + ",";
       }
       line = line.substring(0, line.length() - 1);
-      map[rows] = line;
+      map.add(line);
     }
-    saveStrings("map.txt", map);
+    
+    map.add("");
+    map.add("Buildings");
+    for (Building b: game.players.get(0).buildings) {
+      String line = "";
+      line += b.getClass().getSimpleName() + ":" + b.x + ":" + b.y;
+      map.add(line);
+    }
+    
+    saveStrings("map.txt", map.toArray(new String[map.size()]));
   }
   void mouseOver() {
     for (Tile t : tileList) {
@@ -107,7 +121,7 @@ class MapEditor implements State {
         triangle(x, y+16, x, y+14, x+2, y+16);
       }
     }
-    
+
     for (Building u : buildingList) {
       if (u.isMouseOver()) {
         int x = u.x;
@@ -174,6 +188,8 @@ class MapEditor implements State {
           nt = new MountainTile(x, y);
         } else if (selected instanceof WaterTile) {
           nt = new WaterTile(x, y);
+        } else if (selected instanceof TreeTile) {
+          nt = new TreeTile(x, y);
         }
         game.tiles[y/16][x/16] = nt;
       } else if (type.equals("unit")) {
@@ -193,9 +209,13 @@ class MapEditor implements State {
           game.players.get(0).addUnit(new ArtilleryUnit(x/16, y/16));
         }
       } else if (type.equals("building")) {
-        if(selectedBuilding instanceof HQ) { 
-         game.players.get(0).addBuilding(new HQ(x/16,y/16));
-        }       
+        if (selectedBuilding instanceof HQ) { 
+          game.players.get(0).addBuilding(new HQ(x/16, y/16));
+        } else if (selectedBuilding instanceof City) { 
+          game.players.get(0).addBuilding(new City(x/16, y/16));
+        } else if (selectedBuilding instanceof Factory) { 
+          game.players.get(0).addBuilding(new Factory(x/16, y/16));
+        }
       }
     }
     /*
