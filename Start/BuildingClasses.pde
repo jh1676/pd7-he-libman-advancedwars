@@ -2,12 +2,14 @@ abstract class Building {
   Player owner;
   HashMap<Integer, PImage> sprites;
   int x, y;  //tile index
+  int defense;
   int imgNum;
-  public Building(int x, int y, int imgNum) {
+  public Building(int x, int y, int imgNum, int def) {
     this.x = x;
     this.y = y;
     this.imgNum = imgNum;
     this.sprites = Start.defaultBuildingImages;
+    this.defense = def;
   }
   boolean isNeutral() {
     return owner == null;
@@ -28,8 +30,20 @@ abstract class Building {
 
 class HQ extends Building {
   public HQ(int x, int y) {
-   super(x,y,1); 
+   super(x,y,1,4); 
   }
 
+}
+
+class City extends Building {
+ public City(int x, int y) {
+  super(x,y,2,3);
+ } 
+}
+
+class Factory extends Building {
+ public Factory(int x, int y) {
+  super(x,y,3,3);
+ } 
 }
 
