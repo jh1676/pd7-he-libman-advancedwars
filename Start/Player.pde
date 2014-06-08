@@ -1,5 +1,6 @@
 class Player {
   color c;
+  int money;
   private ArrayList<Unit> units = new ArrayList<Unit>();
   private ArrayList<Building> buildings = new ArrayList<Building>();
 
@@ -7,6 +8,7 @@ class Player {
   HashMap<Integer, PImage> unitImages = new HashMap<Integer, PImage>();
   public Player(color c) {
     this.c = c;
+    this.money = 10000;
     for (Integer n : Start.unitImagePaths.keySet ()) {
       PImage pI = loadImage(Start.unitImagePaths.get(n));
       recolor(pI, color(240, 88, 8), c, 25);

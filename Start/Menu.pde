@@ -18,15 +18,15 @@ class Menu {
       }
       currentItem = abs(currentItem % choices.size());
     } else if (key == ENTER || key == RETURN) {
-        choices.get(currentItem).action();
-      }
- 
+      choices.get(currentItem).action();
     }
-  
+  }
+
   //pixel coordinates
   void draw() {
     fill(bg);
-    rect(x, y, x+widthh, choices.size() * 20);
+    rectMode(CORNERS);
+    rect(x, y, x+widthh, y+ choices.size() * 20);
     fill(0, 0, 0);
     textAlign(LEFT, TOP);
     textFont(Start.arial, 12);
@@ -38,6 +38,7 @@ class Menu {
       text(choices.get(i).getText(), x + 2, y + (i * 14) + 2);
       fill(0, 0, 0);
     }
+    rectMode(CORNER);
   }
 
   void add(Choice c) {
@@ -50,6 +51,9 @@ interface Choice {
   void action();
 }
 
+interface BuyChoice extends Choice {
+  int getPrice();
+}
 class WaitChoice implements Choice {
   Unit actOn;
 
@@ -70,7 +74,7 @@ class EndTurnChoice implements Choice {
   String getText() {
     return "End Turn";
   }
-  void action(){
+  void action() {
     Game g = (Game)Start.s;
     g.nextTurn();
     g.selected = null;
@@ -85,6 +89,34 @@ class ExitMenuChoice implements Choice {
   void action() {
     Game g = (Game)Start.s;
     g.menu = null;
+  }
+}
+
+class SoldierChoice implements BuyChoice {
+  Player buyer;
+  int x, y;
+  public SoldierChoice(Player buyer, int x, int y) {
+    this.buyer = buyer;
+    this.x = x;
+    this.y = y;
+  }
+  String getText() {
+    return "Infantry: " + getPrice();
+  }
+  void action() {
+    if (buyer.money < getPrice()) {
+      Game g = (Game)Start.s;
+      g.menu = null;
+      return;
+    } else {
+     buyer.money -= getPrice(); 
+     buyer.addUnit(new RedSoldier(x,y));
+    }
+    Game g = (Game)Start.s;
+    g.menu = null;
+  }
+  int getPrice () {
+    return 1000;
   }
 }
 

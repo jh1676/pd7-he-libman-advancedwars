@@ -50,7 +50,7 @@ class Game implements State {
           } else {
             if (p[n].equals("Buildings")) {
               buildingTime = true;
-              
+
               continue;
             }
           }
@@ -78,7 +78,8 @@ class Game implements State {
       }
       players.get(0).addUnit(new RedSoldier(2, 2));
       players.get(0).addUnit(new APCUnit(7, 5));
-      players.get(1).addUnit(new APCUnit(8,3));
+      players.get(1).addUnit(new APCUnit(8, 3));
+      players.get(0).addBuilding(new Factory(10,10));
     }
 
     for (int i = 0; i < tiles.length; i++) {
@@ -89,8 +90,8 @@ class Game implements State {
       }
     }
   }
-  void nextTurn(){
-    for (Unit u: turns.peek().units){
+  void nextTurn() {
+    for (Unit u : turns.peek ().units) {
       u.movePoints = u.maxMovePoints;
       u.attacked = false;
     }
@@ -115,8 +116,8 @@ class Game implements State {
   void draw() {
     drawTiles();
     drawTintTiles();
-    if (selected != null){
-      selected.getAttackableUnits(); 
+    if (selected != null) {
+      selected.getAttackableUnits();
     }
     /*for (int a = 0; a < tiles.length; a++) {
      for (int b = 0; b < tiles[0].length; b++) {
@@ -129,9 +130,9 @@ class Game implements State {
         a.draw();
       }
     }
-    
+
     for (Building b : neutralBuildings) {
-     b.draw(); 
+      b.draw();
     }
     for (Player p : players) {
       ArrayList<Unit> units = p.getUnits();
@@ -148,16 +149,14 @@ class Game implements State {
   } 
 
 
-  void keyPressed(){
-    if (menu == null && key == TAB){
-      menu = new Menu(40,20,30);
+  void keyPressed() {
+    if (menu == null && key == TAB) {
+      menu = new Menu(40, 20, 30);
       menu.add(new EndTurnChoice());
-    }
-    else if (menu != null && key == TAB) {
-      menu = null; 
-    }
-    else if (menu != null) {
-     menu.keyPressed(); 
+    } else if (menu != null && key == TAB) {
+      menu = null;
+    } else if (menu != null) {
+      menu.keyPressed();
     }
   }
 
@@ -184,26 +183,31 @@ class Game implements State {
     int x = (mouseX/16);
     int y = (mouseY/16);
     changeUnitTile(x, y);
-    attackUnit(x,y);
+    attackUnit(x, y);
+    buildingMenus(x, y);
   }
 
-  /*void changeUnitTile(int x, int y){
-   <<<<<<< HEAD
-   if (tiles[y][x].unit != null && selected == null) {
-   selected = tiles[y][x].unit;
-   selX = x;
-   selY = y;
-   <<<<<<< HEAD
-   System.out.println(tiles[y][x].unit.getMoveLocs());
-   =======
-   }else if (tiles[y][x].unit == null && selected != null) {
-   tiles[y][x].unit = selected;
-   selected = null;
-   tiles[selY][selX].unit = null;
-   >>>>>>> ca54b99d1f9c31148f174cdcbfdeea6c31334d98
-   }
-   }*/
+  void buildingMenus(int x, int y) {
+    boolean good = true;
+    for (Player p : players) {
+      for (Unit u : p.getUnits ()) {
+        if (u.x == x && u.y == y) {
+          good = false;
+        }
+      }
+    }
 
+    Player now = turns.peek();
+    for (Building b : now.getBuildings ()) {
+      if (b.x == x && b.y == y) {
+        if (b instanceof Factory) {
+          menu = new Menu(x*16, y*16, 128);
+          menu.add(new SoldierChoice(now, x, y));
+          menu.add(new ExitMenuChoice());
+        }
+      }
+    }
+  }
   void changeUnitTile(int x, int y) {
     ArrayList<Unit> units = turns.peek().getUnits();
     for (Unit u : units) {
@@ -228,10 +232,10 @@ class Game implements State {
     }
   }
   void attackUnit(int x, int y) {
-    if (selected != null){
+    if (selected != null) {
       ArrayList<Unit> units = selected.getAttackableUnits();
-      for (Unit u: units){
-        if (u.x == x && u.y == y && ! selected.attacked){
+      for (Unit u : units) {
+        if (u.x == x && u.y == y && ! selected.attacked) {
           u.health -= selected.attack;
           if (u.health <= 0){
             for (Player p: players){
