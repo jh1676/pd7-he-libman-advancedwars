@@ -8,7 +8,6 @@ class Game implements State {
   ArrayList<Building> neutralBuildings = new ArrayList<Building>();
   ArrayList<Player> players = new ArrayList<Player>();
   Queue<Player> turns;
-
   public Game() {
     String[] map = loadStrings("map.txt");
     tiles = new Tile[26][26];
@@ -146,12 +145,18 @@ class Game implements State {
     if (menu != null) {
       menu.draw();
     }
+    textFont(Start.arial, 16);
+    textAlign(LEFT);
+    if (!(Start.s instanceof MapEditor)) {
+      text("Player " + turns.peek().getPlayerNum(), 0, 432);
+      text("Money: " + turns.peek().money, 0, 448);
+    }
   } 
 
 
   void keyPressed() {
     if (menu == null && key == TAB) {
-      menu = new Menu(40, 20, 30);
+      menu = new Menu(40, 20, 60);
       menu.add(new EndTurnChoice());
     } else if (menu != null && key == TAB) {
       menu = null;
@@ -237,11 +242,6 @@ class Game implements State {
       for (Unit u : units) {
         if (u.x == x && u.y == y && ! selected.attacked) {
           u.health -= selected.attack;
-          if (u.health <= 0){
-            for (Player p: players){
-              p.units.remove(u);
-            }
-          }
           selected.attacked = true;
         }
       }

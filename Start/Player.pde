@@ -58,6 +58,19 @@ class Player {
   ArrayList<Building> getBuildings() {
     return buildings;
   }
+  
+  int getPlayerNum() {
+    Game game = null;
+   if (Start.s instanceof MapEditor) {
+    game = ((MapEditor)Start.s).game; 
+   } else if (Start.s instanceof Game) {
+    game = (Game)Start.s; 
+   } else {
+    return -1; 
+   }
+   return game.players.indexOf(this);
+   
+  }
   void recolor(PImage p, color old, color newI, int tol) {
 
     for (int x = 0; x < p.width; x++) {
