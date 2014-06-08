@@ -233,6 +233,11 @@ class Game implements State {
       for (Unit u: units){
         if (u.x == x && u.y == y && ! selected.attacked){
           u.health -= selected.attack;
+          if (u.health <= 0){
+            for (Player p: players){
+              p.units.remove(u);
+            }
+          }
           selected.attacked = true;
         }
       }
