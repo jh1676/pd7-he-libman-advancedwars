@@ -149,11 +149,11 @@ class Game implements State {
 
 
   void keyPressed(){
-    if (menu == null && key == "ESC"){
+    if (menu == null && key == ESC){
       menu = new Menu(40,20,30);
       menu.add(new EndTurnChoice());
     }
-    else if (menu != null && key == "ESC") {
+    else if (menu != null && key == ESC) {
       menu = null; 
     }
     else if (menu != null) {
