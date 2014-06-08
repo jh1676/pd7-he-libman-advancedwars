@@ -206,8 +206,10 @@ class Game implements State {
     for (Building b : now.getBuildings ()) {
       if (b.x == x && b.y == y) {
         if (b instanceof Factory) {
-          menu = new Menu(x*16, y*16, 128);
+          menu = new Menu(x*16, y*16, 164);
           menu.add(new SoldierChoice(now, x, y));
+          menu.add(new MechSoldierChoice(now,x,y));
+          menu.add(new ReconUnitChoice(now,x,y));
           menu.add(new ExitMenuChoice());
         }
       }

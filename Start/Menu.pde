@@ -109,8 +109,8 @@ class SoldierChoice implements BuyChoice {
       g.menu = null;
       return;
     } else {
-     buyer.money -= getPrice(); 
-     buyer.addUnit(new RedSoldier(x,y));
+      buyer.money -= getPrice(); 
+      buyer.addUnit(new RedSoldier(x, y));
     }
     Game g = (Game)Start.s;
     g.menu = null;
@@ -120,3 +120,58 @@ class SoldierChoice implements BuyChoice {
   }
 }
 
+class MechSoldierChoice implements BuyChoice {
+  Player buyer;
+  int x, y;
+  public MechSoldierChoice(Player buyer, int x, int y) {
+    this.buyer = buyer;
+    this.x = x;
+    this.y = y;
+  }
+  String getText() {
+    return "Mech (RPG) Soldier: " + getPrice();
+  }
+  void action() {
+    if (buyer.money < getPrice()) {
+      Game g = (Game)Start.s;
+      g.menu = null;
+      return;
+    } else {
+      buyer.money -= getPrice(); 
+      buyer.addUnit(new MechSoldier(x, y));
+    }
+    Game g = (Game)Start.s;
+    g.menu = null;
+  }
+  int getPrice () {
+    return 3000;
+  }
+}
+
+class ReconUnitChoice implements BuyChoice {
+  Player buyer;
+  int x, y;
+  public ReconUnitChoice(Player buyer, int x, int y) {
+    this.buyer = buyer;
+    this.x = x;
+    this.y = y;
+  }
+  String getText() {
+    return "Recon: " + getPrice();
+  }
+  void action() {
+    if (buyer.money < getPrice()) {
+      Game g = (Game)Start.s;
+      g.menu = null;
+      return;
+    } else {
+      buyer.money -= getPrice(); 
+      buyer.addUnit(new ReconUnit(x, y));
+    }
+    Game g = (Game)Start.s;
+    g.menu = null;
+  }
+  int getPrice () {
+    return 4000;
+  }
+}
