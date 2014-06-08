@@ -80,7 +80,7 @@ abstract class Unit {
 
   ArrayList<Tile> getMoveLocs() {
     ArrayList<Tile> p = new ArrayList<Tile>();
-    getMoveLocs(maxMovePoints, p, x, y);
+    getMoveLocs(movePoints, p, x, y);
     Tile[][] tiles = ((Game)Start.s).tiles;
     p.remove((tiles[y][x]));
   
@@ -136,20 +136,20 @@ abstract class Unit {
       try{
         Path up = current.add(tiles[current.getLast().getY() - 1][current.getLast().getX()]);
         //print(" up ");
-        if (up.getMoveCost() <= maxMovePoints) q.add(up);
+        if (up.getMoveCost() <= movePoints) q.add(up);
       }catch(IndexOutOfBoundsException e){}
       try{
         Path down = current.add(tiles[current.getLast().getY() + 1][current.getLast().getX()]);
         //print(" down ");
-        if (down.getMoveCost() <= maxMovePoints) q.add(down);
+        if (down.getMoveCost() <= movePoints) q.add(down);
       }catch(IndexOutOfBoundsException e){}
       try{
         Path left = current.add(tiles[current.getLast().getY()][current.getLast().getX() - 1]);
-        if (left.getMoveCost() <= maxMovePoints) q.add(left);
+        if (left.getMoveCost() <= movePoints) q.add(left);
       }catch(IndexOutOfBoundsException e){}
       try{
         Path right = current.add(tiles[current.getLast().getY()][current.getLast().getX() + 1]);
-        if (right.getMoveCost() <= maxMovePoints) q.add(right);
+        if (right.getMoveCost() <= movePoints) q.add(right);
       }catch(IndexOutOfBoundsException e){}
       //return;
     }
@@ -168,6 +168,7 @@ abstract class Unit {
       }
       else if (z >= movementPath.p.size() - 1){
         z = 0;
+        movePoints -= movementPath.getMoveCost() - 1;
         movementPath = null;
         move = "no";
       }
