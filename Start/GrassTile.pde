@@ -6,7 +6,7 @@ class GrassTile extends Tile {
 
 class MountainTile extends Tile {
   public MountainTile(int x, int y) {
-    super(x, y, 0,1, Start.mountain, "mountain");
+    super(x, y, 4, 4, Start.mountain, "mountain");
   }
 }
 
@@ -50,12 +50,12 @@ class Road6Tile extends Tile {
 
 class WaterTile extends Tile {
  public WaterTile(int x, int y) {
-  super(x,y,1,999,Start.water, "water");
+  super(x,y,0,999,Start.water, "water");
  } 
 }
 
 class TreeTile extends Tile {
  public TreeTile(int x,int y) {
-  super(x,y,1,2,Start.tree, "tree");
+  super(x,y,2,2,Start.tree, "tree");
  } 
 }

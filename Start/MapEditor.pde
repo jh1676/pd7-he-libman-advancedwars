@@ -35,9 +35,9 @@ class MapEditor implements State {
     unitList.add(new APCUnit(0, 462));
     unitList.add(new ArtilleryUnit(0, 462));
 
-    buildingList.add(new HQ(0, 482));
-    buildingList.add(new Factory(0, 482));
-    buildingList.add(new City(0, 482));
+    //buildingList.add(new HQ(0, 482));
+    //buildingList.add(new Factory(0, 482));
+    //buildingList.add(new City(0, 482));
 
     for (int i = 0; i < tileList.size (); i++) {
       tileList.get(i).setX((400/(tileList.size() + 1) * (i +1)));

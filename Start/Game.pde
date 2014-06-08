@@ -20,7 +20,7 @@ class Game implements State {
       players.add(p);
       turns.add(p);
     }
-
+    //needed :capture of buildings, saving of units/buildings + switching unit side, unit stats
     if (map != null) {
       boolean buildingTime = false;
       for (int i = 0; i < map.length; i++) {
@@ -77,8 +77,9 @@ class Game implements State {
       }
       players.get(0).addUnit(new RedSoldier(2, 2));
       players.get(0).addUnit(new APCUnit(7, 5));
-      players.get(1).addUnit(new APCUnit(8, 3));
-      players.get(0).addBuilding(new Factory(10,10));
+      players.get(1).addUnit(new APCUnit(20, 22));
+      players.get(1).addUnit(new RedSoldier(20,20));
+      //players.get(0).addBuilding(new Factory(10,10));
     }
 
     for (int i = 0; i < tiles.length; i++) {
@@ -112,6 +113,20 @@ class Game implements State {
       }
     }
   }
+  void checkPlayers(){ //removes player if they lose their HQ
+    for (int i = 0; i < players.size(); i++){
+      boolean alive = false;
+      for (Building b: players.get(i).buildings){
+        if (b instanceof HQ){
+          alive = true;
+        }
+      }
+      if (! alive){
+        players.remove(i);
+        i--;
+      }
+    }
+  }
   void draw() {
     drawTiles();
     drawTintTiles();
@@ -123,6 +138,7 @@ class Game implements State {
      tiles[a][b].drawUnit();
      }
      }*/
+     checkPlayers();
     for (Player p : players) {
       ArrayList<Building> buildings = p.getBuildings();
       for (Building a : buildings) {
@@ -148,8 +164,15 @@ class Game implements State {
     textFont(Start.arial, 16);
     textAlign(LEFT);
     if (!(Start.s instanceof MapEditor)) {
-      text("Player " + turns.peek().getPlayerNum(), 0, 432);
+      text("Player " + (turns.peek().getPlayerNum() + 1), 0, 432);
       text("Money: " + turns.peek().money, 0, 448);
+      if (selected != null){
+        text("Health: " + selected.health, 0, 468);
+      }
+      if (players.size() == 1){ //if only one player remains, he/she is the winner
+        textFont(Start.arial, 26);
+        text("Player " + (players.get(0).getPlayerNum() + 1) + " has won!",75,442);
+      }
     }
   } 
 
@@ -193,11 +216,12 @@ class Game implements State {
   }
 
   void buildingMenus(int x, int y) {
-    boolean good = true;
+    //boolean good = true;
     for (Player p : players) {
       for (Unit u : p.getUnits ()) {
         if (u.x == x && u.y == y) {
-          good = false;
+          //good = false;
+          return;
         }
       }
     }
@@ -243,7 +267,22 @@ class Game implements State {
       ArrayList<Unit> units = selected.getAttackableUnits();
       for (Unit u : units) {
         if (u.x == x && u.y == y && ! selected.attacked) {
-          u.health -= selected.attack;
+          int b = 0;
+          for (Player i: players){
+            if (i.units.contains(u)){
+              for (Building e: i.buildings){
+                if (e.x == x && e.y == y){
+                  b = e.defense;
+                }
+              }
+            }
+          }
+          u.takeDmg(selected.attack,b);
+          if (u.health <= 0){
+            for (Player p: players){
+              p.units.remove(u);
+            }
+          }
           selected.attacked = true;
         }
       }

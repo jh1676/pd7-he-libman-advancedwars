@@ -114,12 +114,14 @@ abstract class Unit {
   void getMoveLocs(int pointsLeft, ArrayList<Tile> current, int x, int y) {
     Tile[][] tiles = ((Game)Start.s).tiles;
     if (pointsLeft > 0 && x >= 0 && y >= 0 && x < 26 && y < 26) {  
-      current.add(tiles[y][x]);
       pointsLeft = pointsLeft - tiles[y][x].moveCost;
-      getMoveLocs(pointsLeft, current, x+1, y);
-      getMoveLocs(pointsLeft, current, x-1, y);
-      getMoveLocs(pointsLeft, current, x, y + 1);
-      getMoveLocs(pointsLeft, current, x, y-1);
+      if (pointsLeft > 0){
+        current.add(tiles[y][x]);
+        getMoveLocs(pointsLeft, current, x+1, y);
+        getMoveLocs(pointsLeft, current, x-1, y);
+        getMoveLocs(pointsLeft, current, x, y + 1);
+        getMoveLocs(pointsLeft, current, x, y-1);
+      }
     }
   }
   ArrayList<Unit> getAttackableUnits(){
@@ -144,7 +146,13 @@ abstract class Unit {
     }
     return attackable;
   }
-
+  void takeDmg(int damage, int buildingDef){
+    Tile[][] tiles = ((Game)Start.s).tiles;
+    int amount = damage - tiles[y][x].defense - buildingDef;
+    if (amount > 0){
+      health -= amount;
+    }
+  }
 
   void drawList() {//mapEditor unitList draw function
     image(loadImage("sprites/sprite" + animations[0] + ".png"), x, y);
@@ -221,7 +229,7 @@ abstract class Unit {
         move = "no";
       }
       Game game = (Game)Start.s;
-      game.menu = new Menu((x * 16) + 32, y * 16, 50);
+      game.menu = new Menu((x * 16) + 32, y * 16, 60);
       game.menu.add(new WaitChoice(this));
       game.menu.add(new ExitMenuChoice());
     }
