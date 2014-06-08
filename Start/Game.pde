@@ -4,10 +4,11 @@ class Game implements State {
   int numRows = 26, numCols = 26;
   int selX, selY;
   int numPlayers;
+  Menu menu;
 
   ArrayList<Player> players = new ArrayList<Player>();
   Queue<Player> turns;
-  
+
   public Game() {
     String[] map = loadStrings("map.txt");
     tiles = new Tile[26][26];
@@ -60,20 +61,20 @@ class Game implements State {
       }
     }
   }
-  
-  void drawTiles(){
+
+  void drawTiles() {
     for (int a = 0; a < tiles.length; a++) {
       for (int b = 0; b < tiles[0].length; b++) {
         tiles[a][b].draw();
       }
     }
   }
-  void drawTintTiles(){
-    if (selected != null){
-      for (Tile t: selected.getMoveLocs()){
-        tint(0,220,0,125);
+  void drawTintTiles() {
+    if (selected != null) {
+      for (Tile t : selected.getMoveLocs ()) {
+        tint(0, 220, 0, 125);
         t.draw();
-        tint(255,255,255);
+        tint(255, 255, 255);
       }
     }
   }
@@ -96,13 +97,20 @@ class Game implements State {
       for (Unit a : units) {
         a.draw();
         a.moveOnPath();
+        
       }
     }
     mouseOver();
+    
+    if (menu != null) {
+     menu.draw(); 
+    }
   } 
 
-  void keyPressed(){
-    
+  void keyPressed() {
+    if (menu != null) {
+     menu.keyPressed(); 
+    }
   }
 
 
@@ -127,25 +135,25 @@ class Game implements State {
     }
     int x = (mouseX/16);
     int y = (mouseY/16);
-    changeUnitTile(x,y);
+    changeUnitTile(x, y);
   }
 
   /*void changeUnitTile(int x, int y){
-<<<<<<< HEAD
-    if (tiles[y][x].unit != null && selected == null) {
-      selected = tiles[y][x].unit;
-      selX = x;
-      selY = y;
-<<<<<<< HEAD
-      System.out.println(tiles[y][x].unit.getMoveLocs());
-=======
-    }else if (tiles[y][x].unit == null && selected != null) {
-      tiles[y][x].unit = selected;
-      selected = null;
-      tiles[selY][selX].unit = null;
->>>>>>> ca54b99d1f9c31148f174cdcbfdeea6c31334d98
-    }
-  }*/
+   <<<<<<< HEAD
+   if (tiles[y][x].unit != null && selected == null) {
+   selected = tiles[y][x].unit;
+   selX = x;
+   selY = y;
+   <<<<<<< HEAD
+   System.out.println(tiles[y][x].unit.getMoveLocs());
+   =======
+   }else if (tiles[y][x].unit == null && selected != null) {
+   tiles[y][x].unit = selected;
+   selected = null;
+   tiles[selY][selX].unit = null;
+   >>>>>>> ca54b99d1f9c31148f174cdcbfdeea6c31334d98
+   }
+   }*/
 
   void changeUnitTile(int x, int y) {
     for (Player p : players) {
@@ -156,11 +164,11 @@ class Game implements State {
           return;
         } else if (selected != null && selected.x == x && selected.y == y) {
           selected = null;
+          return;
         } else if (selected != null && u.x == x && u.y == y) {
           return;
         }
       }
-
       if (selected != null) {
         for (Tile g : selected.getMoveLocs ()) {
           if (g.x / 16 == x && g.y / 16 == y) {
@@ -173,3 +181,4 @@ class Game implements State {
     }
   }
 }
+

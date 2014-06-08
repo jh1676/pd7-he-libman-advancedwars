@@ -2,7 +2,7 @@ abstract class Tile {
   PImage img;
   int x, y, defense, moveCost;
   String name;
-  Unit unit;
+
 
   public Tile(int x, int y, int defense, int moveCost, PImage img, String name) {
     this.x = x;

@@ -47,6 +47,9 @@ abstract class Unit {
   }//image(sprites.get(animations[currentFrame]),x*16,y*16);
 
   void draw() {
+    if (movePoints <= 0) {
+     tint(47,39,15,200); 
+    }
     if (move.equals("no")) {
       image(sprites.get(animations[currentFrame]),x*16,y*16);;
     } else if (d == 16) {
@@ -75,19 +78,34 @@ abstract class Unit {
       }
     }
     nextFrame();
+    tint(255,255,255);
   }
 
 
   ArrayList<Tile> getMoveLocs() {
     ArrayList<Tile> p = new ArrayList<Tile>();
-    getMoveLocs(movePoints, p, x, y);
+    getMoveLocs(movePoints + 1, p, x, y);
     Tile[][] tiles = ((Game)Start.s).tiles;
     p.remove((tiles[y][x]));
   
     Set setItems = new LinkedHashSet(p);
     p.clear();
     p.addAll(setItems);
-
+    Game game;
+    
+    if (Start.s instanceof MapEditor) {
+     game = ((MapEditor)Start.s).game; 
+    } else if (Start.s instanceof Game) {
+     game = (Game)Start.s; 
+    }
+    
+    for (Player player : players) {
+     for (Unit u : player.units) {
+      if (player.contains(tiles[u.y][u.x]) {
+       player.remove(tiles[u.y][u.x]);
+      }
+     } 
+    }
     return p;
   }
 
@@ -172,7 +190,12 @@ abstract class Unit {
         movementPath = null;
         move = "no";
       }
+      Game game = (Game)Start.s;
+      game.menu = new Menu((x * 16) + 32, y * 16, 50);
+      game.menu.add(new WaitChoice(this));
+      game.menu.add(new ExitMenuChoice());
     }
+  
   }
   void setColor(color c) {
     this.c = c;
