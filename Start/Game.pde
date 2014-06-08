@@ -51,6 +51,7 @@ class Game implements State {
       }
       players.get(0).addUnit(new RedSoldier(2, 2));
       players.get(0).addUnit(new APCUnit(7, 5));
+      players.get(1).addUnit(new APCUnit(8,3));
     }
 
     for (int i = 0; i < tiles.length; i++) {
@@ -81,6 +82,9 @@ class Game implements State {
   void draw() {
     drawTiles();
     drawTintTiles();
+    if (selected != null){
+      selected.getAttackableUnits(); 
+    }
     /*for (int a = 0; a < tiles.length; a++) {
      for (int b = 0; b < tiles[0].length; b++) {
      tiles[a][b].drawUnit();
@@ -156,26 +160,24 @@ class Game implements State {
    }*/
 
   void changeUnitTile(int x, int y) {
-    for (Player p : players) {
-      ArrayList<Unit> units = p.getUnits();
-      for (Unit u : units) {
-        if (u.x == x && u.y == y && selected == null) {
-          selected = u;
-          return;
-        } else if (selected != null && selected.x == x && selected.y == y) {
+    ArrayList<Unit> units = turns.peek().getUnits();
+    for (Unit u : units) {
+      if (u.x == x && u.y == y && selected == null) {
+        selected = u;
+        return;
+      } else if (selected != null && selected.x == x && selected.y == y) {
+        selected = null;
+        return;
+      } else if (selected != null && u.x == x && u.y == y) {
+        return;
+      }
+    }
+    if (selected != null) {
+      for (Tile g : selected.getMoveLocs ()) {
+        if (g.x / 16 == x && g.y / 16 == y) {
+          selected.moveTo(x, y);
           selected = null;
           return;
-        } else if (selected != null && u.x == x && u.y == y) {
-          return;
-        }
-      }
-      if (selected != null) {
-        for (Tile g : selected.getMoveLocs ()) {
-          if (g.x / 16 == x && g.y / 16 == y) {
-            selected.moveTo(x, y);
-            selected = null;
-            return;
-          }
         }
       }
     }

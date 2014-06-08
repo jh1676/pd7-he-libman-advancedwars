@@ -16,7 +16,7 @@ abstract class Unit {
 
   private color c = color(255, 255, 255);
   int[] animations;
-  int maxMovePoints, movePoints;
+  int maxMovePoints, movePoints, attackRange = 5;
   String move = "no";
   Player owner;
   HashMap<Integer, PImage> sprites;
@@ -121,7 +121,27 @@ abstract class Unit {
       getMoveLocs(pointsLeft, current, x, y-1);
     }
   }
-
+  ArrayList<Unit> getAttackableUnits(){
+    Game game = (Game)Start.s;
+    ArrayList<Tile> range = new ArrayList<Tile>();
+    getMoveLocs(attackRange,range,x,y);
+    ArrayList<Unit> attackable = new ArrayList<Unit>();
+    for (Player player: game.players){
+      if (player != owner){
+        for (Unit u: player.units){
+          for (Tile t: range){
+            if (t.getX() == u.x && t.getY() == u.y){
+              tint(220, 0, 0, 125);
+              t.draw();
+              tint(255, 255, 255);
+              attackable.add(u);
+            }
+          }
+        }
+      }
+    }
+    return attackable;
+  }
 
 
   void drawList() {//mapEditor unitList draw function
