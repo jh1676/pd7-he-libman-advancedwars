@@ -53,3 +53,9 @@ class WaterTile extends Tile {
   super(x,y,1,999,Start.water, "water");
  } 
 }
+
+class TreeTile extends Tile {
+ public TreeTile(int x,int y) {
+  super(x,y,1,2,Start.tree, "tree");
+ } 
+}

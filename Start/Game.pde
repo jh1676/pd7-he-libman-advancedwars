@@ -5,7 +5,7 @@ class Game implements State {
   int selX, selY;
   int numPlayers;
   Menu menu;
-
+  ArrayList<Building> neutralBuildings = new ArrayList<Building>();
   ArrayList<Player> players = new ArrayList<Player>();
   Queue<Player> turns;
 
@@ -23,6 +23,7 @@ class Game implements State {
     }
 
     if (map != null) {
+      boolean buildingTime = false;
       for (int i = 0; i < map.length; i++) {
         String[] p = map[i].split(",");
         for (int n = 0; n < p.length; n++) {
@@ -44,8 +45,34 @@ class Game implements State {
             tiles[i][n] = new MountainTile(n*16, i*16);
           } else if (p[n].equals("water")) {
             tiles[i][n] = new WaterTile(n*16, i*16);
+          } else if (p[n].equals("tree")) {
+            tiles[i][n] = new TreeTile(n*16, i*16);
           } else {
-            System.out.println(p[n]);
+            if (p[n].equals("Buildings")) {
+              buildingTime = true;
+              
+              continue;
+            }
+          }
+
+          if (buildingTime) {
+            String[] parts = p[n].split(":");
+            if (parts.length == 3) {
+              int xx = Integer.parseInt(parts[1]);
+              int yy = Integer.parseInt(parts[2]);
+              if (parts[0].equals("Factory")) {
+                neutralBuildings.add(new Factory(xx, yy));
+              } else if (parts[0].equals("City")) {
+                neutralBuildings.add(new City(xx, yy));
+              } else if (parts[0].equals("HQ")) {
+                for (Player player : players) {
+                  if (!player.hasHQ()) {
+                    player.addBuilding(new HQ(xx, yy)); 
+                    break;
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -92,24 +119,27 @@ class Game implements State {
         a.draw();
       }
     }
+    
+    for (Building b : neutralBuildings) {
+     b.draw(); 
+    }
     for (Player p : players) {
       ArrayList<Unit> units = p.getUnits();
       for (Unit a : units) {
         a.draw();
         a.moveOnPath();
-        
       }
     }
     mouseOver();
-    
+
     if (menu != null) {
-     menu.draw(); 
+      menu.draw();
     }
   } 
 
   void keyPressed() {
     if (menu != null) {
-     menu.keyPressed(); 
+      menu.keyPressed();
     }
   }
 

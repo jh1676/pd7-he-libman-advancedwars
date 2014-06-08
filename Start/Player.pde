@@ -19,8 +19,11 @@ class Player {
 
     for (Integer n : Start.buildingImagePaths.keySet ()) {
       PImage v = loadImage(Start.buildingImagePaths.get(n));
-      recolor(v, color(248, 160, 88), c, 5);
-      recolor(v, color(208, 64, 56), c, 5);
+      recolor(v, color(248, 160, 88), c, 15);
+      recolor(v, color(208, 64, 56), c, 15);
+      recolor(v, color(222, 113, 77), c, 15);
+      recolor(v, color(221, 132, 77), c, 15);
+      recolor(v, color(215, 87, 68), c, 15);
       buildingImages.put(n, v);
     }
   }
@@ -32,7 +35,14 @@ class Player {
     units.add(p);
   }
 
-
+  boolean hasHQ() {
+    for (Building b : buildings) {
+      if (b instanceof HQ) {
+        return true;
+      }
+    }
+    return false;
+  }
   void addBuilding(Building p) {
     p.owner = this;
     p.sprites = buildingImages;
@@ -43,7 +53,7 @@ class Player {
     return units;
   }
 
-ArrayList<Building> getBuildings() {
+  ArrayList<Building> getBuildings() {
     return buildings;
   }
   void recolor(PImage p, color old, color newI, int tol) {

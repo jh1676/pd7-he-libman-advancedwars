@@ -1,6 +1,6 @@
 abstract class Tile {
   PImage img;
-  int x, y, defense, moveCost;
+  int x, y, defense, moveCost;  //x,y is pixel #
   String name;
 
 

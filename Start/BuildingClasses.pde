@@ -14,13 +14,13 @@ abstract class Building {
   boolean isNeutral() {
     return owner == null;
   }
-  
+
   void draw() {
-   image(sprites.get(imgNum), x*16, y*16); 
+    image(sprites.get(imgNum), x*16, y*16);
   }
-  
+
   void drawMapEditor() {
-    image(sprites.get(imgNum), x, y); 
+    image(sprites.get(imgNum), x, y);
   }
   boolean isMouseOver() {//should only activate for units in the unitList bar in map editor, but potentially buggy
 
@@ -30,20 +30,19 @@ abstract class Building {
 
 class HQ extends Building {
   public HQ(int x, int y) {
-   super(x,y,1,4); 
+    super(x, y, 1, 4);
   }
-
 }
 
 class City extends Building {
- public City(int x, int y) {
-  super(x,y,2,3);
- } 
+  public City(int x, int y) {
+    super(x, y, 2, 3);
+  }
 }
 
 class Factory extends Building {
- public Factory(int x, int y) {
-  super(x,y,3,3);
- } 
+  public Factory(int x, int y) {
+    super(x, y, 3, 3);
+  }
 }
 
