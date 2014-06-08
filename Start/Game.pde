@@ -4,6 +4,7 @@ class Game implements State {
   Unit selected = null;
   int numRows = 26, numCols = 26;
   int selX, selY;
+  ArrayList<Player> players = new ArrayList<Player>();
   public Game() {
     String[] map = loadStrings("map.txt");
     tiles = new Tile[26][26];
@@ -33,7 +34,8 @@ class Game implements State {
           }
         }
       }
-      units.add(new RedSoldier(2,2, color(128,128,128)));
+      players.get(0).addUnit(new RedSoldier(2, 2));
+      players.get(0).addUnit(new APCUnit(7,5));
     }
 
     for (int i = 0; i < tiles.length; i++) {
@@ -66,10 +68,20 @@ class Game implements State {
     drawTiles();
     drawTintTiles();
     /*for (int a = 0; a < tiles.length; a++) {
+<<<<<<< HEAD
       for (int b = 0; b < tiles[0].length; b++) {
         tiles[a][b].drawUnit();
+=======
+     for (int b = 0; b < tiles[0].length; b++) {
+     tiles[a][b].drawUnit();
+     }
+     }*/
+    for (Player p : players) {
+      ArrayList<Unit> units = p.getUnits();
+      for (Unit a : units) {
+        a.draw();
       }
-    }*/
+    }
     for (Unit a: units){
       a.draw();
       a.moveOnPath();
@@ -117,6 +129,7 @@ class Game implements State {
     changeUnitTile(x,y);
   }
   /*void changeUnitTile(int x, int y){
+<<<<<<< HEAD
     if (tiles[y][x].unit != null && selected == null) {
       selected = tiles[y][x].unit;
       selX = x;
@@ -147,11 +160,32 @@ class Game implements State {
       for (Tile g: selected.getMoveLocs()){
         if (g.x / 16 == x && g.y / 16 == y){
           selected.moveTo(x,y);
+        }
+      }
+    }
+  }
+  void changeUnitTile(int x, int y) {
+    for (Player p : players) {
+      ArrayList<Unit> units = p.getUnits();
+      for (Unit u : units) {
+        if (u.x == x && u.y == y && selected == null) {
+          selected = u;
+          return;
+        } else if (selected != null && selected.x == x && selected.y == y) {
+          selected = null;
+        } else if (selected != null && u.x == x && u.y == y) {
+          return;
+        }
+      }
+    
+    if (selected != null) {
+      for (Tile g : selected.getMoveLocs ()) {
+        if (g.x / 16 == x && g.y / 16 == y) {
+          selected.moveTo(x, y);
           selected = null;
           return;
         }
       }
     }
   }
-      
 }

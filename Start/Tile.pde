@@ -38,10 +38,6 @@ abstract class Tile {
     return (mouseX >= this.x && mouseX <= this.x + 16 && mouseY >= this.y && mouseY <= this.y+16);
   }
   
-  void highlight() {
-    
-  }
-  
   double distance(int a, int b){
     return Math.abs(getX() - a) + Math.abs(getY() - b);
   }
