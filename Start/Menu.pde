@@ -66,7 +66,17 @@ class WaitChoice implements Choice {
     g.menu = null;
   }
 }
-
+class EndTurnChoice implements Choice {
+  String getText() {
+    return "End Turn";
+  }
+  void action(){
+    Game g = (Game)Start.s;
+    g.nextTurn();
+    g.selected = null;
+    g.menu = null;
+  }
+}
 class ExitMenuChoice implements Choice {
   String getText() {
     return "Exit Menu";

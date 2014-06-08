@@ -62,7 +62,13 @@ class Game implements State {
       }
     }
   }
-
+  void nextTurn(){
+    for (Unit u: turns.peek().units){
+      u.movePoints = u.maxMovePoints;
+      u.attacked = false;
+    }
+    turns.add(turns.poll());
+  }
   void drawTiles() {
     for (int a = 0; a < tiles.length; a++) {
       for (int b = 0; b < tiles[0].length; b++) {
@@ -111,8 +117,15 @@ class Game implements State {
     }
   } 
 
-  void keyPressed() {
-    if (menu != null) {
+  void keyPressed(){
+    if (menu == null && key == 'e'){
+      menu = new Menu(40,20,30);
+      menu.add(new EndTurnChoice());
+    }
+    else if (menu != null && key == 'e') {
+      menu = null; 
+    }
+    else if (menu != null) {
      menu.keyPressed(); 
     }
   }
@@ -140,6 +153,7 @@ class Game implements State {
     int x = (mouseX/16);
     int y = (mouseY/16);
     changeUnitTile(x, y);
+    attackUnit(x,y);
   }
 
   /*void changeUnitTile(int x, int y){
@@ -178,6 +192,17 @@ class Game implements State {
           selected.moveTo(x, y);
           selected = null;
           return;
+        }
+      }
+    }
+  }
+  void attackUnit(int x, int y) {
+    if (selected != null){
+      ArrayList<Unit> units = selected.getAttackableUnits();
+      for (Unit u: units){
+        if (u.x == x && u.y == y && ! selected.attacked){
+          u.health -= selected.attack;
+          selected.attacked = true;
         }
       }
     }

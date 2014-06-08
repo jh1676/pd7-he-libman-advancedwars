@@ -16,11 +16,12 @@ abstract class Unit {
 
   private color c = color(255, 255, 255);
   int[] animations;
-  int maxMovePoints, movePoints, attackRange = 5;
+  int maxMovePoints, movePoints, attack = 5, attackRange = 5;
   String move = "no";
   Player owner;
   HashMap<Integer, PImage> sprites;
   Path movementPath;
+  boolean attacked = false;
 
 
   public Unit(int x, int y, int movePoints) {
@@ -126,6 +127,7 @@ abstract class Unit {
     ArrayList<Tile> range = new ArrayList<Tile>();
     getMoveLocs(attackRange,range,x,y);
     ArrayList<Unit> attackable = new ArrayList<Unit>();
+    if (attacked) return attackable;
     for (Player player: game.players){
       if (player != owner){
         for (Unit u: player.units){
