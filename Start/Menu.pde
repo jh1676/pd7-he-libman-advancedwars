@@ -66,6 +66,7 @@ class WaitChoice implements Choice {
   }
   void action() {
     actOn.movePoints = 0;
+    actOn.attacked = true;
     Game g = (Game)Start.s;
     g.menu = null;
   }
@@ -110,7 +111,10 @@ class SoldierChoice implements BuyChoice {
       return;
     } else {
       buyer.money -= getPrice(); 
-      buyer.addUnit(new RedSoldier(x, y));
+      RedSoldier un = new RedSoldier(x, y);
+      un.movePoints = 0;
+      un.attacked = true;
+      buyer.addUnit(un);
     }
     Game g = (Game)Start.s;
     g.menu = null;
@@ -138,7 +142,10 @@ class MechSoldierChoice implements BuyChoice {
       return;
     } else {
       buyer.money -= getPrice(); 
-      buyer.addUnit(new MechSoldier(x, y));
+      MechSoldier un = new MechSoldier(x, y);
+      un.movePoints = 0;
+      un.attacked = true;
+      buyer.addUnit(un);
     }
     Game g = (Game)Start.s;
     g.menu = null;
@@ -165,13 +172,136 @@ class ReconUnitChoice implements BuyChoice {
       g.menu = null;
       return;
     } else {
-      buyer.money -= getPrice(); 
-      buyer.addUnit(new ReconUnit(x, y));
+      buyer.money -= getPrice();
+      ReconUnit un = new ReconUnit(x, y);
+      un.movePoints = 0;
+      un.attacked = true;
+      buyer.addUnit(un);
     }
     Game g = (Game)Start.s;
     g.menu = null;
   }
   int getPrice () {
     return 4000;
+  }
+}
+class APCUnitChoice implements BuyChoice {
+  Player buyer;
+  int x, y;
+  public APCUnitChoice(Player buyer, int x, int y) {
+    this.buyer = buyer;
+    this.x = x;
+    this.y = y;
+  }
+  String getText() {
+    return "APC: " + getPrice();
+  }
+  void action() {
+    if (buyer.money < getPrice()) {
+      Game g = (Game)Start.s;
+      g.menu = null;
+      return;
+    } else {
+      buyer.money -= getPrice();
+      APCUnit un = new APCUnit(x, y);
+      un.movePoints = 0;
+      un.attacked = true;
+      buyer.addUnit(un);
+    }
+    Game g = (Game)Start.s;
+    g.menu = null;
+  }
+  int getPrice () {
+    return 4000;
+  }
+}
+class TankUnitChoice implements BuyChoice {
+  Player buyer;
+  int x, y;
+  public TankUnitChoice(Player buyer, int x, int y) {
+    this.buyer = buyer;
+    this.x = x;
+    this.y = y;
+  }
+  String getText() {
+    return "Tank: " + getPrice();
+  }
+  void action() {
+    if (buyer.money < getPrice()) {
+      Game g = (Game)Start.s;
+      g.menu = null;
+      return;
+    } else {
+      buyer.money -= getPrice();
+      TankUnit un = new TankUnit(x, y);
+      un.movePoints = 0;
+      un.attacked = true;
+      buyer.addUnit(un);
+    }
+    Game g = (Game)Start.s;
+    g.menu = null;
+  }
+  int getPrice () {
+    return 7000;
+  }
+}
+class BigTankChoice implements BuyChoice {
+  Player buyer;
+  int x, y;
+  public BigTankChoice(Player buyer, int x, int y) {
+    this.buyer = buyer;
+    this.x = x;
+    this.y = y;
+  }
+  String getText() {
+    return "Big Tank: " + getPrice();
+  }
+  void action() {
+    if (buyer.money < getPrice()) {
+      Game g = (Game)Start.s;
+      g.menu = null;
+      return;
+    } else {
+      buyer.money -= getPrice();
+      BigTank un = new BigTank(x, y);
+      un.movePoints = 0;
+      un.attacked = true;
+      buyer.addUnit(un);
+    }
+    Game g = (Game)Start.s;
+    g.menu = null;
+  }
+  int getPrice () {
+    return 11500;
+  }
+}
+class ArtilleryUnitChoice implements BuyChoice {
+  Player buyer;
+  int x, y;
+  public ArtilleryUnitChoice(Player buyer, int x, int y) {
+    this.buyer = buyer;
+    this.x = x;
+    this.y = y;
+  }
+  String getText() {
+    return "Artillery: " + getPrice();
+  }
+  void action() {
+    if (buyer.money < getPrice()) {
+      Game g = (Game)Start.s;
+      g.menu = null;
+      return;
+    } else {
+      buyer.money -= getPrice();
+      ArtilleryUnit un = new ArtilleryUnit(x, y);
+      un.movePoints = 0;
+      un.attacked = true;
+      buyer.addUnit(un);
+    }
+    Game g = (Game)Start.s;
+    g.menu = null;
+  }
+  int getPrice () {
+    return 5000;
   }
 }

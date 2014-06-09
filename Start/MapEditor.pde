@@ -35,9 +35,9 @@ class MapEditor implements State {
     unitList.add(new APCUnit(0, 462));
     unitList.add(new ArtilleryUnit(0, 462));
 
-    //buildingList.add(new HQ(0, 482));
-    //buildingList.add(new Factory(0, 482));
-    //buildingList.add(new City(0, 482));
+    buildingList.add(new HQ(0, 482));
+    buildingList.add(new Factory(0, 482));
+    buildingList.add(new City(0, 482));
 
     for (int i = 0; i < tileList.size (); i++) {
       tileList.get(i).setX((400/(tileList.size() + 1) * (i +1)));
@@ -88,10 +88,26 @@ class MapEditor implements State {
     
     map.add("");
     map.add("Buildings");
-    for (Building b: game.players.get(0).buildings) {
-      String line = "";
-      line += b.getClass().getSimpleName() + ":" + b.x + ":" + b.y;
-      map.add(line);
+    for (Player p: game.players){
+      for (Building b: p.buildings) {
+        String line = "";
+        line += b.getClass().getSimpleName() + ":" + b.x + ":" + b.y;
+        map.add(line);
+      }
+    }
+    for (Building b: game.neutralBuildings) {
+        String line = "";
+        line += b.getClass().getSimpleName() + ":" + b.x + ":" + b.y;
+        map.add(line);
+    }
+    map.add("");
+    map.add("Units");
+    for (Player p: game.players) {
+      for (Unit u: p.units){
+        String line = "";
+        line += u.getClass().getSimpleName() + ":" + u.x + ":" + u.y + ":" + u.owner.getPlayerNum();
+        map.add(line);
+      }
     }
     
     saveStrings("map.txt", map.toArray(new String[map.size()]));
@@ -210,11 +226,11 @@ class MapEditor implements State {
         }
       } else if (type.equals("building")) {
         if (selectedBuilding instanceof HQ) { 
-          game.players.get(0).addBuilding(new HQ(x/16, y/16));
+          game.neutralBuildings.add(new HQ(x/16, y/16));
         } else if (selectedBuilding instanceof City) { 
-          game.players.get(0).addBuilding(new City(x/16, y/16));
+          game.neutralBuildings.add(new City(x/16, y/16));
         } else if (selectedBuilding instanceof Factory) { 
-          game.players.get(0).addBuilding(new Factory(x/16, y/16));
+          game.neutralBuildings.add(new Factory(x/16, y/16));
         }
       }
     }
@@ -233,7 +249,24 @@ class MapEditor implements State {
       save();
     } else if (key == 'm') {
       s = new StartMenu();
-    }
+    } else if (key == 'z') {
+      Player h = null;
+      Unit m = null;
+      int X = mouseX/16;
+      int Y = mouseY/16;
+      for (Player p: game.players){
+        for (Unit u: p.units){
+          if (u.x == X && u.y == Y){
+            h = p;
+            m = u;
+          }
+        }
+      }
+      if (h != null && m != null){
+        game.players.get((h.getPlayerNum() + 1) % game.players.size()).addUnit(m);
+        h.units.remove(m);
+      }
+    } 
   }
 }
 

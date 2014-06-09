@@ -12,11 +12,11 @@
 import java.util.*;
 
 abstract class Unit {
-  int health = 10, currentFrame, i, d, x, y, z;//x and y coors are equal to tile index, unless unit is in the mapeditor bar
+  int health = 20, currentFrame, i, d, x, y, z;//x and y coors are equal to tile index, unless unit is in the mapeditor bar
 
   private color c = color(255, 255, 255);
   int[] animations;
-  int maxMovePoints, movePoints, attack = 5, attackRange = 5;
+  int maxMovePoints, movePoints, attack, attackRange;
   String move = "no";
   Player owner;
   HashMap<Integer, PImage> sprites;
@@ -24,11 +24,13 @@ abstract class Unit {
   boolean attacked = false;
 
 
-  public Unit(int x, int y, int movePoints) {
+  public Unit(int x, int y, int movePoints, int attack, int attackRange) {
     this.x = x;
     this.y = y;
     this.maxMovePoints = movePoints;
     this.movePoints = movePoints;
+    this.attack = attack;
+    this.attackRange = attackRange;
   }
   void setAnimations(int[] animations) {
     this.animations = animations;
@@ -232,10 +234,43 @@ abstract class Unit {
       game.menu = new Menu((x * 16) + 32, y * 16, 60);
       game.menu.add(new WaitChoice(this));
       game.menu.add(new ExitMenuChoice());
+        
     }
   }
+  
   void setColor(color c) {
     this.c = c;
+  }
+  void capture(){
+    Game game = (Game)Start.s;
+    for (Building b: game.neutralBuildings){
+      if (b.x == x && b.y == y){
+        b.health -= attack;
+        if (b.health <= 0){
+          b.health = b.maxHealth;
+          owner.addBuilding(b);
+          game.neutralBuildings.remove(b);
+          //print("|");
+          return;
+        }
+      }
+    }
+    for (Player p: game.players){
+      if (owner.getPlayerNum() != p.getPlayerNum()){
+         for (Building b: p.buildings){ 
+           if (b.x == x && b.y == y){
+              b.health -= attack;
+              if (b.health <= 0){
+                b.health = b.maxHealth;
+                //print(b.owner.getPlayerNum());
+                b.owner.buildings.remove(b);
+                owner.addBuilding(b);
+                return;
+              }
+           }
+         }
+      }
+    }
   }
 }
 
