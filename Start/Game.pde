@@ -159,9 +159,10 @@ class Game implements State {
               alive = true;
             }
           }
-          if (! alive) {
+          if (!alive) {
             for (Building o : players.get (i).buildings) {
               o.owner = null;
+              o.sprites = Start.defaultBuildingImages;
               neutralBuildings.add(o);
             }
             players.remove(i);
